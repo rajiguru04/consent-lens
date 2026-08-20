@@ -1,0 +1,44 @@
+{
+  "question": "My relationship manager said 'you'll get an OTP, approve the next screen.' What did I approve?",
+  "outcome": "ABSTAINED",
+  "text": "I can't answer that from these documents. (NOT_IN_CORPUS)",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "identify_route",
+      "input": {
+        "description": "Relationship manager said you'll get an OTP, approve the next screen"
+      },
+      "output": {
+        "route": "UNKNOWN",
+        "governed": false,
+        "note": "Route not identified from the description. Which route was used determines which protections apply \u2014 worth establishing first."
+      }
+    },
+    {
+      "step": "abstain",
+      "reason": "NOT_IN_CORPUS",
+      "audit_passed": false,
+      "unsupported": [
+        "The description doesn't tell us which data-sharing route you used (Account Aggregator consent, net banking credential share, PDF upload, etc.).",
+        "What you approved depends entirely on which system generated that OTP screen.",
+        "If you can describe what app or website you were on, or what happened just before the OTP arrived, that would help identify which framework applies."
+      ],
+      "assurance_passed": true,
+      "assurance_phrases": []
+    }
+  ]
+}

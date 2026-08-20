@@ -1,0 +1,162 @@
+{
+  "question": "I forwarded my eCAS to a portfolio advisory service for free advice. What can they do with it?",
+  "outcome": "ABSTAINED",
+  "text": "I can't answer that from these documents. (ROUTE_NOT_GOVERNED)",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "identify_route",
+      "input": {
+        "description": "forwarded my eCAS to a portfolio advisory service"
+      },
+      "output": {
+        "route": "ECAS",
+        "governed": false,
+        "note": "Consolidated account statement shared by email or file. The statement's issuance is regulated, but forwarding it is not governed by any consent framework \u2014 no consent artefact, no purpose limitation, no expiry, no revocation, no audit trail."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "check_exposure_register",
+      "input": {
+        "artefact": "eCAS email forward"
+      },
+      "output": {
+        "found": true,
+        "artefact": "eCAS / consolidated account statement",
+        "carries_credentials": false,
+        "does_not_enable": "Redeeming, transferring or debiting the account. A redemption has to be authenticated with the fund house or platform, and the statement carries no credential and no authorisation.",
+        "does_enable": "Complete visibility of what you hold, where, and how much \u2014 which makes an approach from someone pretending to be your fund house or advisor far more convincing.",
+        "evidence": "Author's assessment from domain knowledge. An eCAS is a reporting document issued by an RTA or depository; it contains no authentication material.",
+        "verified": false,
+        "reminder": "State capability only. Never assert the user is safe."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "what an eCAS contains and what it can be used for"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "cl. 9.1",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "9.1 The NBFC-AA consolidates financial information of a customer held with\u00a0different financial entities under different financial sector regulators. In order to ensure that movement of data among different financial entities, spread across financial sector regulators adopting different IT systems and interfaces; is secured, duly authorised, smooth and seamless, a set of core technical specifications for the participants of the AA ecosystem have been framed by Reserve Bank Information Technology Private Limited (ReBIT), and published the same on its website ( www.rebit.org.in ).",
+            "score": 0.267,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 9.1 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 14.1",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "14.1 An Account Aggregator shall have adequate internal mechanisms for reviewing, monitoring and evaluating its controls, systems, procedures and safeguards. The integrity of the IT systems shall be maintained at all times and all necessary precautions taken to ensure that the records are not lost, destroyed or tampered with.\n\n 14.1A 10 Experience of the Board \n\n Considering the need for professional experience in managing the affairs of the NBFC-AA, at least one of the directors shall have relevant experience of having worked in a bank/NBFC.",
+            "score": 0.265,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 14.1 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 14.4.1",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "14.4.1 The account aggregator shall establish a well-documented risk management framework which shall include\n\n a) A sound and robust technology risk management framework;\n\n b) Strengthening system security, reliability, resiliency, and recoverability; and\n\n c) Deploying strong authentication to protect access to customer data and systems.",
+            "score": 0.264,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 14.4.1 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 8",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "8. Data Security\n\n (a) Business of an Account Aggregator will be entirely Information Technology (IT) driven. Account Aggregator shall adopt required IT framework and interfaces to ensure secure data flows from the Financial Information providers to its own systems and onwards to the Financial Information users.\n\n (b) Account Aggregator shall not request or store customer credentials (like passwords, PINs, private keys) which may be used for authenticating customers to the Financial Information providers. Access by Account Aggregators to customer\u2019s information shall only be based on consent-based authorisation.\n\n (c) The technology should also be scalable to cover any other financial information or financial information provider as may be specified by the Bank in future.\n\n (d) There shall be adequate safeguards built in its IT systems to ensure that it is protected against unauthorised access, alteration, destruction, disclosure or dissemination of records and data.\n\n (e) Appropriate measures for Disaster Risk Management and Business Continuity shall be in place.\n\n (f) Information System Audit of the internal systems and processes shall be in place and shall be conducted at least o",
+            "score": 0.263,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 8 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 16",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "16. Managing Risks and Code of Conduct in Outsourcing of Financial Services by NBFC-AA. \n\n Every Account Aggregator shall conduct a self-assessment of their existing outsourcing arrangements and bring these in line with the directions as provided at Annex 7 .",
+            "score": 0.259,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 16 (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "consolidated account statement CAS what information holdings portfolio"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "cl. 7.6",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.6 Use of information by Account Aggregator and Financial Information user",
+            "score": 0.564,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.6 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.7",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.7 Joining the Account Aggregator Ecosystem as Financial Information User 9 \n\n With a view to ensure efficient and optimum utilisation of the Account Aggregator ecosystem, regulated entities of the Reserve Bank joining the Account Aggregator ecosystem as Financial Information User shall necessarily join as Financial Information Provider also, if they hold the specified financial information and fall under the definition of Financial Information Provider.",
+            "score": 0.529,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.7 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.6.2",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.6.2 Where financial information has been provided by a Financial Information provider to an Account Aggregator for transferring to the customer or to a Financial Information user, it shall not be used or disclosed by an Account Aggregator or the Financial Information user except as may be specified in the consent artefact.",
+            "score": 0.487,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.6.2 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.1",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.1 Financial Information providers shall share financial information of a customer with an Account Aggregator on being presented a valid consent artefact by an Account Aggregator in accordance with Clause 6.",
+            "score": 0.478,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.1 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 9",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "9. Technical Specification for all participants of the Account Aggregator ecosystem",
+            "score": 0.477,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 9 (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "abstain",
+      "reason": "ROUTE_NOT_GOVERNED",
+      "audit_passed": false,
+      "unsupported": [
+        "You shared an eCAS by forwarding the file or email.",
+        "That route is not governed by the Account Aggregator consent framework or the RBI Master Direction \u2014 there is no consent artefact, no purpose restriction, no expiry, and no log of what happens to it after you send it."
+      ],
+      "assurance_passed": true,
+      "assurance_phrases": []
+    }
+  ]
+}

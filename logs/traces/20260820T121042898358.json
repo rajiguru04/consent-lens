@@ -1,0 +1,148 @@
+{
+  "question": "My relationship manager said 'you'll get an OTP, approve the next screen.' What did I approve?",
+  "outcome": "ABSTAINED",
+  "text": "The consent framework documents don't specify what the OTP or approval screen authenticate in the flow. Without knowing what application or service you were using\u2014and what was shown on the \"next screen\" before you approved\u2014I can't tell you what consent or transaction you authorized. If this was Account Aggregator consent, the consent artefact must show who will receive data, what data, and for what purpose, but whether those details were displayed to you before or after the OTP isn't spelled out in the RBI directions.",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "identify_route",
+      "input": {
+        "description": "relationship manager said to approve OTP and next screen"
+      },
+      "output": {
+        "route": "UNKNOWN",
+        "governed": false,
+        "note": "Route not identified from the description. Which route was used determines which protections apply \u2014 worth establishing first."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "check_gap_register",
+      "input": {
+        "topic": "what consent or transaction is approved when relationship manager instructs customer to approve OTP screen"
+      },
+      "output": {
+        "found": false
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "what does OTP approval consent screen authenticate in Account Aggregator flow"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "cl. 6.3",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "6.3 The consent of the customer obtained by the Account Aggregator shall be a standardised consent artefact which shall contain the following details, namely:\u2014\n\n identity of the customer and optional contact information;\n\n \n\n the nature of the financial information requested;\n\n \n\n purpose of collecting such information;\n\n \n\n the identity of the recipients of the information, if any;\n\n \n\n URL or other address to which notification needs to be sent every time the consent artefact is used to access information\n\n \n\n Consent creation date, expiry date, identity and signature/ digital signature of the Account Aggregator; and\n\n \n\n any other attribute as may be prescribed by the Bank.",
+            "score": 0.642,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.3 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.2",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.2 Upon being presented the consent artefact, the Financial Information provider shall verify:\n\n (a) validity of consent\n\n (b) specified dates and usage; and\n\n (c) the credentials of the Account Aggregator\n\n through appropriate means.",
+            "score": 0.621,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.2 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.5",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.5 To enable these data flows, the Financial Information providers shall:\n\n implement interfaces that will allow an Account Aggregator to submit consent artefacts, and authenticate each other, and would enable secure flow of financial information to the Account Aggregator;\n\n \n\n adopt means to verify the consent including digital signatures, if any, contained in the consent artefact;\n\n \n\n implement means to digitally sign the financial information that is shared by them about the customers;\n\n \n\n maintain a log of all information sharing requests and the actions performed by them pursuant to such requests, and submit the same to the Account Aggregator.",
+            "score": 0.605,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.5 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 6.5",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "6.5 At the time of obtaining consent, the Account Aggregator shall inform the customer of all necessary attributes to be contained in the consent artefact as per paragraph 6.3 above and the right of the customer to file complaints with relevant authorities in case of non-redressal of grievances.",
+            "score": 0.573,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.5 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 15",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "15. Requirement to obtain prior approval of the Bank for acquisition or transfer of control of Account Aggregators \u2013",
+            "score": 0.563,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 15 (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "customer authentication OTP approval consent artefact what customer approves"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "cl. 6.3",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "6.3 The consent of the customer obtained by the Account Aggregator shall be a standardised consent artefact which shall contain the following details, namely:\u2014\n\n identity of the customer and optional contact information;\n\n \n\n the nature of the financial information requested;\n\n \n\n purpose of collecting such information;\n\n \n\n the identity of the recipients of the information, if any;\n\n \n\n URL or other address to which notification needs to be sent every time the consent artefact is used to access information\n\n \n\n Consent creation date, expiry date, identity and signature/ digital signature of the Account Aggregator; and\n\n \n\n any other attribute as may be prescribed by the Bank.",
+            "score": 0.563,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.3 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 6.7",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "6.7 An electronic consent artefact shall be capable of being logged, audited and verified.",
+            "score": 0.549,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.7 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.2",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.2 Upon being presented the consent artefact, the Financial Information provider shall verify:\n\n (a) validity of consent\n\n (b) specified dates and usage; and\n\n (c) the credentials of the Account Aggregator\n\n through appropriate means.",
+            "score": 0.52,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.2 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 6.4",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "6.4 The consent artefact can also be obtained in electronic form.",
+            "score": 0.496,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.4 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 6.5",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "6.5 At the time of obtaining consent, the Account Aggregator shall inform the customer of all necessary attributes to be contained in the consent artefact as per paragraph 6.3 above and the right of the customer to file complaints with relevant authorities in case of non-redressal of grievances.",
+            "score": 0.492,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.5 (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "abstain",
+      "reason": "NOT_IN_CORPUS"
+    }
+  ]
+}

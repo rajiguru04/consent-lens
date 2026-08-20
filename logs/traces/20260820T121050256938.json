@@ -1,0 +1,24 @@
+{
+  "question": "Can I take it back? Do they delete what they already have?",
+  "outcome": "ABSTAINED",
+  "text": "I can't answer that from these documents.",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "no_tool_call",
+      "note": "model returned prose; forcing abstain"
+    }
+  ]
+}

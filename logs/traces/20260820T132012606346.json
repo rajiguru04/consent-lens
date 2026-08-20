@@ -1,0 +1,61 @@
+{
+  "question": "I forwarded my eCAS to a portfolio advisory service for free advice. What can they do with it?",
+  "outcome": "ABSTAINED",
+  "text": "I can't answer that from these documents. (ROUTE_NOT_GOVERNED)",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "identify_route",
+      "input": {
+        "description": "forwarded my eCAS to a portfolio advisory service"
+      },
+      "output": {
+        "route": "ECAS",
+        "governed": false,
+        "note": "Consolidated account statement shared by email or file. The statement's issuance is regulated, but forwarding it is not governed by any consent framework \u2014 no consent artefact, no purpose limitation, no expiry, no revocation, no audit trail."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "check_exposure_register",
+      "input": {
+        "artefact": "eCAS forwarded by email"
+      },
+      "output": {
+        "found": true,
+        "artefact": "eCAS / consolidated account statement",
+        "carries_credentials": false,
+        "does_not_enable": "Redeeming, transferring or debiting the account. A redemption has to be authenticated with the fund house or platform, and the statement carries no credential and no authorisation.",
+        "does_enable": "Complete visibility of what you hold, where, and how much \u2014 which makes an approach from someone pretending to be your fund house or advisor far more convincing.",
+        "evidence": "Author's assessment from domain knowledge. An eCAS is a reporting document issued by an RTA or depository; it contains no authentication material.",
+        "verified": false,
+        "reminder": "State capability only. Never assert the user is safe."
+      }
+    },
+    {
+      "step": "abstain",
+      "reason": "ROUTE_NOT_GOVERNED",
+      "audit_passed": false,
+      "unsupported": [
+        "You forwarded an eCAS file; that route is not governed by any consent framework or specification I can cite.",
+        "An eCAS does not carry credentials to redeem or transfer your holdings, but it does show complete details of what you own\u2014which could make impersonation attempts more convincing.",
+        "Because there is no consent artefact and no regulatory text governing the forward, I cannot tell you what rules apply to how the recipient may use it."
+      ],
+      "assurance_passed": true,
+      "assurance_phrases": []
+    }
+  ]
+}

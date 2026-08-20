@@ -1,0 +1,36 @@
+{
+  "question": "My relationship manager said 'you'll get an OTP, approve the next screen.' What did I approve?",
+  "outcome": "ABSTAINED",
+  "text": "I can't answer that from these documents.",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "identify_route",
+      "input": {
+        "description": "relationship manager said you'll get an OTP, approve the next screen"
+      },
+      "output": {
+        "route": "UNKNOWN",
+        "governed": false,
+        "note": "Route not identified from the description. Which route was used determines which protections apply \u2014 worth establishing first."
+      }
+    },
+    {
+      "step": "no_tool_call",
+      "note": "model returned prose; forcing abstain"
+    }
+  ]
+}

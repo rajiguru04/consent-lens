@@ -1,0 +1,27 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Embeddings are rebuildable; the corpus snapshot is not (keep that).
+corpus/vectors.npy
+
+# PERSONAL — never publish. Contains interview context and self-assessment.
+consent-lens-build-brief.md
+BUILD-PLAN.md
+
+.DS_Store
+
+# Saved-webpage asset directories (images/css/js) from "Save Page As, Complete" —
+# the pipeline only reads the sibling .html file's text, never these. ~43MB of
+# bloat with no product value in a repo that explains its corpus, not renders it.
+corpus/manual/*_files/
+
+# PDFs dropped into corpus/manual/ that were never wired into the pipeline —
+# either rejected as off-topic (SEBI Regulation.pdf — see logs/failures.md,
+# not actually about eCAS despite the name) or unused duplicates (KYC, Master
+# Directions copies). Not referenced by corpus/manifest.json. Kept on disk,
+# not published — a public corpus repo should only contain what the pipeline
+# actually cites from.
+corpus/manual/*.pdf

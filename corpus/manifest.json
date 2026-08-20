@@ -1,0 +1,123 @@
+[
+  {
+    "id": "rbi-md-nbfc-aa",
+    "title": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+    "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=10598",
+    "kind": "html",
+    "authority": "regulation",
+    "path": "corpus/rbi-md-nbfc-aa.html",
+    "sha256": "8eca88084d08bb17",
+    "bytes": 195547,
+    "retrieved_at": "2026-08-20T13:01:34+00:00",
+    "retrieval_method": "automated"
+  },
+  {
+    "id": "depa-consent-artefact",
+    "title": "DEPA \u2014 Consent Artefact",
+    "url": "https://depa.world/learn/consent-artefact",
+    "kind": "html",
+    "authority": "specification",
+    "path": "corpus/depa-consent-artefact.html",
+    "sha256": "73f70dcda9de8b3e",
+    "bytes": 17634,
+    "retrieved_at": "2026-08-20T13:01:35+00:00",
+    "retrieval_method": "automated"
+  },
+  {
+    "id": "cdsl-cas-faq",
+    "title": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+    "url": "https://www.cdslindia.com/cas/FAQ.html",
+    "kind": "html",
+    "authority": "public-awareness",
+    "shape": "faq",
+    "path": "corpus/cdsl-cas-faq.html",
+    "sha256": "3fcfdc3796748d8f",
+    "bytes": 27004,
+    "retrieved_at": "2026-08-20T13:01:35+00:00",
+    "retrieval_method": "automated"
+  },
+  {
+    "id": "sahamati-consent-guidelines",
+    "title": "Sahamati \u2014 Design Principles for Informed Consent",
+    "url": "https://raw.githubusercontent.com/Sahamati/customer-experience-guidelines/main/consent-guidelines.md",
+    "kind": "markdown",
+    "authority": "sro-guidance",
+    "path": "corpus/sahamati-consent-guidelines.md",
+    "sha256": "709f4c81ffa46c29",
+    "bytes": 4797,
+    "retrieved_at": "2026-08-20T13:12:13+00:00",
+    "retrieval_method": "automated"
+  },
+  {
+    "id": "rbi-kehta-hai-digital-banking-safeguards",
+    "title": "RBI Kehta Hai \u2014 digital banking safeguards",
+    "url": "https://rbikehtahai.rbi.org.in/ (CAPTCHA-gated \u2014 saved manually)",
+    "kind": "html",
+    "authority": "public-awareness",
+    "path": "corpus/manual/RBI Kehta Hai - digital banking safeguards.html",
+    "sha256": "9b73b83916154655",
+    "bytes": 69694,
+    "retrieved_at": "2026-08-20T13:12:13+00:00",
+    "retrieval_method": "manual"
+  },
+  {
+    "id": "rbi-kehta-hai-rules-when-using-aeps",
+    "title": "RBI Kehta Hai \u2014 Rules when using AEPS",
+    "url": "https://rbikehtahai.rbi.org.in/ (CAPTCHA-gated \u2014 saved manually)",
+    "kind": "html",
+    "authority": "public-awareness",
+    "path": "corpus/manual/RBI Kehta Hai - Rules when using AEPS.html",
+    "sha256": "3aaacd440f7baaab",
+    "bytes": 57187,
+    "retrieved_at": "2026-08-20T13:12:13+00:00",
+    "retrieval_method": "manual"
+  },
+  {
+    "id": "rbi-kehta-hai-limit-loss-on-fraud",
+    "title": "RBI Kehta Hai \u2014 limit loss on fraud",
+    "url": "https://rbikehtahai.rbi.org.in/ (CAPTCHA-gated \u2014 saved manually)",
+    "kind": "html",
+    "authority": "public-awareness",
+    "path": "corpus/manual/RBI Kehta Hai - limit loss on fraud.html",
+    "sha256": "485350412bbd4af1",
+    "bytes": 56175,
+    "retrieved_at": "2026-08-20T13:12:13+00:00",
+    "retrieval_method": "manual"
+  },
+  {
+    "id": "rbi-kehta-hai-unknown-popups",
+    "title": "RBI Kehta Hai \u2014 unknown popups",
+    "url": "https://rbikehtahai.rbi.org.in/ (CAPTCHA-gated \u2014 saved manually)",
+    "kind": "html",
+    "authority": "public-awareness",
+    "path": "corpus/manual/RBI Kehta Hai - unknown popups.html",
+    "sha256": "02a9685efa6080d5",
+    "bytes": 60072,
+    "retrieved_at": "2026-08-20T13:12:13+00:00",
+    "retrieval_method": "manual"
+  },
+  {
+    "id": "rbi-kehta-hai-digital-arrest",
+    "title": "RBI Kehta Hai \u2014 digital arrest",
+    "url": "https://rbikehtahai.rbi.org.in/ (CAPTCHA-gated \u2014 saved manually)",
+    "kind": "html",
+    "authority": "public-awareness",
+    "path": "corpus/manual/RBI Kehta Hai digital arrest.html",
+    "sha256": "86bc94b1fa7f4e38",
+    "bytes": 61561,
+    "retrieved_at": "2026-08-20T13:12:13+00:00",
+    "retrieval_method": "manual"
+  },
+  {
+    "id": "rbi-kehta-hai-aa",
+    "title": "RBI Kehta Hai \u2014 AA",
+    "url": "https://rbikehtahai.rbi.org.in/ (CAPTCHA-gated \u2014 saved manually)",
+    "kind": "html",
+    "authority": "public-awareness",
+    "path": "corpus/manual/RBI Kehta Hai - AA.html",
+    "sha256": "336d3f3eba488202",
+    "bytes": 56095,
+    "retrieved_at": "2026-08-20T13:12:13+00:00",
+    "retrieval_method": "manual"
+  }
+]

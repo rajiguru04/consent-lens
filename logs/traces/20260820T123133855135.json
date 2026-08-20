@@ -1,0 +1,145 @@
+{
+  "question": "What about the account I hold jointly?",
+  "outcome": "ABSTAINED",
+  "text": "Joint accounts cannot currently be linked or shared through Account Aggregator\u2014no bank supports it. Whether the specification excludes joint accounts by design or whether banks simply have not implemented it is not settled in the documents I can see.",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "joint account jointly held account"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "cl. 15",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "15. Requirement to obtain prior approval of the Bank for acquisition or transfer of control of Account Aggregators \u2013",
+            "score": 0.445,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 15 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 4.2.3",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "4.2.3 The Bank may, after being satisfied that the conditions specified under paragraph 4.2.2 are fulfilled, grant in-principle approval for registering as an Account Aggregator subject to such conditions as it may consider fit to impose.",
+            "score": 0.438,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 4.2.3 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 5",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "5. Duties and Responsibilities of an Account Aggregator\n\n Account Aggregator shall provide services to a customer based on the customer\u2019s explicit consent.\n\n \n\n Account Aggregator shall ensure that the providing of services to a customer. shall be backed by appropriate agreements/ authorisations between the Account Aggregator, the customer and the Financial information providers.\n\n \n\n Account Aggregator shall not support transactions by customers.\n\n \n\n Account Aggregator shall ensure appropriate mechanisms for proper customer identification.\n\n \n\n Account Aggregator shall share information as referred to under paragraph 3(iv) only with the customer to whom it relates or any other financial information user as authorized by the customer in accordance with the terms of the consent provided by the customer.\n\n \n\n Account Aggregator shall not undertake any other business other than the business of account aggregator. Deployment of investible surplus by an Account Aggregator in instruments, not for trading, shall however be permitted.\n\n \n\n No financial information of the customer accessed by the Account Aggregator from the financial information providers shall reside with the Account Aggr",
+            "score": 0.425,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 5 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.1",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.1 Financial Information providers shall share financial information of a customer with an Account Aggregator on being presented a valid consent artefact by an Account Aggregator in accordance with Clause 6.",
+            "score": 0.421,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.1 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 10",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "10. Rights of the customer\n\n a) An Account Aggregator shall enable the customer to access a record of the consents provided by him and the Financial Information users with whom the information has been shared.\n\n b) An Account Aggregator shall not use or access any customer information other than for performing the business of account aggregator explicitly requested by the customer.",
+            "score": 0.42,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 10 (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "joint holder joint ownership consent authorization second holder"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "cl. 14.5.1",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "14.5.1 An Account Aggregator shall\n\n i. ensure that a policy is put in place with the approval of the Board of Directors for ascertaining the fit and proper criteria of the directors/ managing director/ CEO at the time of appointment, and on a continuing basis. The policy on the fit and proper criteria shall be on the lines of the Guidelines contained in Annex 4 ;\n\n ii. obtain a declaration and undertaking from the directors/ managing director/ CEO giving additional information on the directors/ managing director/ CEO. The declaration and undertaking shall be on the lines of the format given in Annex 5 ;\n\n iii. obtain a Deed of Covenant signed by the directors/ managing director/ CEO, which shall be in the format as given in Annex 6 ;\n\n iv. furnish to the Bank an annual statement on change of directors/ managing director/ CEO duly certified by the Statutory Auditors that fit and proper criteria in selection of the directors has been followed. The statement must reach the Regional Office of the Bank within 15 days of the close of the year.",
+            "score": 0.464,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 14.5.1 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 6.3",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "6.3 The consent of the customer obtained by the Account Aggregator shall be a standardised consent artefact which shall contain the following details, namely:\u2014\n\n identity of the customer and optional contact information;\n\n \n\n the nature of the financial information requested;\n\n \n\n purpose of collecting such information;\n\n \n\n the identity of the recipients of the information, if any;\n\n \n\n URL or other address to which notification needs to be sent every time the consent artefact is used to access information\n\n \n\n Consent creation date, expiry date, identity and signature/ digital signature of the Account Aggregator; and\n\n \n\n any other attribute as may be prescribed by the Bank.",
+            "score": 0.463,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.3 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.2",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.2 Upon being presented the consent artefact, the Financial Information provider shall verify:\n\n (a) validity of consent\n\n (b) specified dates and usage; and\n\n (c) the credentials of the Account Aggregator\n\n through appropriate means.",
+            "score": 0.458,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.2 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 6.6",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "6.6 An Account Aggregator shall also provide its customers a functionality to revoke consent to obtain information that is rendered accessible by a consent artefact, including the ability to revoke consent to obtain parts of such information. Upon revocation, a fresh consent artefact shall be shared with the Financial Information provider.",
+            "score": 0.458,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.6 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.1",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.1 Financial Information providers shall share financial information of a customer with an Account Aggregator on being presented a valid consent artefact by an Account Aggregator in accordance with Clause 6.",
+            "score": 0.448,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.1 (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "check_gap_register",
+      "input": {
+        "topic": "joint account consent authorization from all holders"
+      },
+      "output": {
+        "found": true,
+        "topic": "joint accounts",
+        "cause": "UNRESOLVED",
+        "evidence": "Reported across secondary sources that no bank supports joint-account discovery on AA. Whether that is a specification exclusion or universal non-implementation is not established.",
+        "verified": false,
+        "suggested_wording": "Joint accounts can't currently be linked or shared through AA \u2014 as far as I can tell, no bank supports it. I should be straight with you about the limit of what I know: I can see it doesn't work in practice, but whether the rules exclude joint accounts or banks simply haven't built it, I can't tell you from these documents."
+      }
+    },
+    {
+      "step": "abstain",
+      "reason": "UNRESOLVED",
+      "audit_passed": true,
+      "unsupported": [],
+      "assurance_passed": true,
+      "assurance_phrases": []
+    }
+  ]
+}
