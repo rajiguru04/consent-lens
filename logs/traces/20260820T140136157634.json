@@ -1,0 +1,14 @@
+{
+  "question": "I shared my OTP with a bank official who called me. Is that okay.",
+  "outcome": "ESCALATED",
+  "text": "Stop and act on this now, before reading anything else.\n\nWhat you've described involves a one-time passcode being shared \u2014 that is different from sharing information, because it can authorise a transaction.\n\n1. Call your bank's fraud helpline immediately. Use the number printed on your card or in your bank's own app \u2014 not a number from a message or from whoever contacted you.\n2. Block the card or freeze the account through your bank's app if you can do it faster yourself.\n3. Report it on cybercrime.gov.in, or call 1930.\n\nI'm not going to assess how likely a loss is, and I'm not going to tell you it's fine. Your bank can act on the account right now; I can't.",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": true,
+      "kind": "otp_shared",
+      "matched": "shared my OTP"
+    }
+  ]
+}

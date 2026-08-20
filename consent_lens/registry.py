@@ -36,10 +36,15 @@ GOVERNED = {Route.AA}
 ROUTE_PATTERNS = [
     (Route.AA, re.compile(r"\b(account aggregator|\baa\b|consent (screen|request|artefact)|"
                           r"finvu|onemoney|anumati|camsfinserv|nadl|saafe|protean)\b", re.I)),
+    # "(?:\w+\s+){0,5}" tolerates a bank/entity name inserted between an anchor word
+    # ("my"/"the") and "statement" — e.g. "uploaded my ICICI bank statement", "forwarded
+    # my HDFC CAS statement". Without it, a real named-bank phrasing breaks the adjacency
+    # the pattern otherwise assumes (found live: "uploaded my ICICI bank statement..."
+    # classified UNKNOWN instead of PDF_UPLOAD — same shape as entries 2 and 8).
     (Route.ECAS, re.compile(r"\b(e-?cas|consolidated account statement|cams statement|"
-                            r"kfintech statement|forwarded (my |the )?statement|nsdl statement|"
-                            r"cdsl statement)\b", re.I)),
-    (Route.PDF_UPLOAD, re.compile(r"\b(upload(ed)? (my |the )?(bank )?statement|"
+                            r"kfintech statement|forwarded (my |the )?(?:\w+\s+){0,5}statement|"
+                            r"nsdl statement|cdsl statement)\b", re.I)),
+    (Route.PDF_UPLOAD, re.compile(r"\b(upload(ed)? (my |the )?(?:\w+\s+){0,5}(bank )?statement|"
                                   r"sent (them |him |her )?(my )?(pdf|statement))\b", re.I)),
     (Route.CREDENTIAL_SHARING, re.compile(r"\b(net ?banking (password|login|credentials)|"
                                           r"gave (them|him|her) my password|shared my (otp|password))\b", re.I)),

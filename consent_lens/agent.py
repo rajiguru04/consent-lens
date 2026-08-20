@@ -8,7 +8,9 @@
       -> [AGENT] tool-calling loop     identify_route / retrieve_clauses /
                                        check_gap_register / check_exposure_register
                                        -> answer | abstain
-      -> [CODE]  guard.audit()         every factual sentence needs a citation.
+      -> [CODE]  guard.audit_claims()  every factual sentence needs a citation or
+                                       a known precedent — common sense within
+                                       the guardrails, not just citation or nothing.
       -> [CODE]  guard.assurance()     no answer may tell anyone they are safe.
 
 Precedence is strict: escalation > refusal > answer.
@@ -31,7 +33,7 @@ from datetime import datetime, timezone
 from dotenv import load_dotenv
 
 from . import escalate
-from .guard import Intent, REFUSAL, assurance_check, audit, audit_abstain, classify
+from .guard import Intent, REFUSAL, assurance_check, audit_claims, classify
 from .index import Index
 from .registry import check_exposure_register, check_gap_register, identify_route
 
@@ -63,6 +65,12 @@ def _cites_clause(citation_text: str, clause_id: str) -> bool:
 
 TRACES = pathlib.Path(__file__).resolve().parent.parent / "logs" / "traces"
 MODEL = os.environ.get("CONSENT_LENS_MODEL", "claude-sonnet-4-5")
+
+COMMON_SENSE_DISCLAIMER = (
+    " (Note: part of this is general reasoning about what this type of document or "
+    "artefact contains — e.g. whether it carries login credentials — not a citation "
+    "to a specific regulatory clause.)"
+)
 
 SYSTEM = """You are Consent Lens. You explain what India's Account Aggregator consent \
 documents say. You have three hard limits:
@@ -204,10 +212,12 @@ class ConsentLens:
 
     # --- tools ----------------------------------------------------------
     def _run_tool(self, name: str, args: dict, trace: list[dict], cites: list[str],
-                  clause_ids: list[str], gap_texts: list[str], question: str):
+                  clause_ids: list[str], gap_texts: list[str], structural_texts: list[str],
+                  question: str):
         if name == "identify_route":
             f = identify_route(args["description"])
             out = {"route": f.route.value, "governed": f.governed, "note": f.note}
+            structural_texts.append(f.note)
         elif name == "retrieve_clauses":
             hits = self.index.search(args["query"], k=5)
             out = {"clauses": [
@@ -228,6 +238,8 @@ class ConsentLens:
                     "does_not_enable": e.does_not_enable, "does_enable": e.does_enable,
                     "evidence": e.evidence, "verified": e.verified,
                     "reminder": "State capability only. Never assert the user is safe."})
+            if e:
+                structural_texts.append(f"{e.does_not_enable} {e.does_enable}")
         elif name == "check_gap_register":
             # See entry 8: the model's own topic paraphrase ("jointly held account") can miss
             # a register entry ("joint account") that the original question would have hit.
@@ -274,6 +286,7 @@ class ConsentLens:
         citations: list[str] = []
         retrieved_clause_ids: list[str] = []
         gap_texts: list[str] = []
+        structural_texts: list[str] = []
         for _ in range(max_turns):
             resp = self.client.messages.create(
                 model=MODEL, max_tokens=1200, system=SYSTEM, tools=TOOLS, messages=messages)
@@ -294,18 +307,31 @@ class ConsentLens:
                     # conversation. Matched by clause_id substring, not exact string, so the
                     # model can phrase the citation differently from Chunk.citation() without
                     # being falsely rejected. This is what actually enforces "no invented
-                    # clause numbers" (failure log 0b) — audit() alone only checks non-emptiness.
+                    # clause numbers" (failure log 0b) — audit_claims() alone only checks that
+                    # SOME citation or precedent exists, not that a supplied one is real.
                     unverified = [c for c in model_cites
                                   if not any(_cites_clause(c, cid) for cid in retrieved_clause_ids)]
                     cites = model_cites or citations
-                    ok, bad = audit(text, cites)
+                    # audit_claims lets a factual sentence through two ways: a real citation
+                    # (cites non-empty — the original rule), or word-overlap coverage by a
+                    # known precedent (gap_texts / structural_texts this conversation actually
+                    # retrieved). The second path is common sense within the guardrails, not a
+                    # citation — found live: the exposure register (does a bank statement or
+                    # eCAS carry credentials?) was entirely self-authored, never corpus-cited,
+                    # so every exposure-driven answer was structurally blocked before this.
+                    # `unverified` above is unaffected — a citation the model DOES supply must
+                    # still be real; this only changes what happens when it supplies none.
+                    ok, bad, precedent_backed = audit_claims(text, cites, gap_texts + structural_texts)
                     trace.append({"step": "guard.audit", "passed": ok, "unsupported": bad,
-                                  "unverified_citations": unverified})
+                                  "unverified_citations": unverified,
+                                  "precedent_backed": precedent_backed})
                     if not ok or unverified:
                         return self._save(Result(
                             question, "AUDIT_FAILED",
                             "I can't answer that without pointing you to the clause it comes from.",
                             [], trace))
+                    if precedent_backed:
+                        text += COMMON_SENSE_DISCLAIMER
                     safe_ok, phrases = assurance_check(text)
                     trace.append({"step": "guard.assurance", "passed": safe_ok,
                                   "phrases": phrases})
@@ -321,26 +347,25 @@ class ConsentLens:
                 if call.name == "abstain":
                     reason = call.input["reason_code"]
                     text = call.input["text"]
-                    # abstain carries no citations by design — so a factual sentence is only
-                    # allowed through if it substantially restates a human-vetted precedent
-                    # (a Gap.user_text this conversation actually retrieved via
-                    # check_gap_register), not a fresh, uncited claim. A model that wants to
-                    # state something new as fact should retrieve and cite it via answer(),
-                    # not smuggle it into abstain's free-text field (found live: entry 5, an
-                    # uncited paraphrase of cl. 6.3 inside an abstain call). The precedent
-                    # exemption exists because the stricter rule alone also discarded a
-                    # CORRECT gap-register paraphrase (entry 7) — audit_abstain() lets that
-                    # through via word-overlap against gap_texts, still rejects anything else.
-                    ok, bad = audit_abstain(text, gap_texts)
+                    # abstain carries no citations by design, so this is always the
+                    # precedent-or-nothing path — same audit_claims() as answer(), pool now
+                    # covers both gap_texts (entry 7) and structural_texts (this fix). A model
+                    # that wants to state something genuinely new as fact should retrieve and
+                    # cite it via answer(), not smuggle it into abstain's free-text field
+                    # (found live: entry 5, an uncited paraphrase of cl. 6.3 inside an abstain
+                    # call).
+                    ok, bad, precedent_backed = audit_claims(text, [], gap_texts + structural_texts)
+                    if precedent_backed:
+                        text += COMMON_SENSE_DISCLAIMER
                     safe_ok, phrases = assurance_check(text)
                     trace.append({"step": "abstain", "reason": reason, "audit_passed": ok,
-                                  "unsupported": bad, "assurance_passed": safe_ok,
-                                  "assurance_phrases": phrases})
+                                  "unsupported": bad, "precedent_backed": precedent_backed,
+                                  "assurance_passed": safe_ok, "assurance_phrases": phrases})
                     if not ok or not safe_ok:
                         text = f"I can't answer that from these documents. ({reason})"
                     return self._save(Result(question, "ABSTAINED", text, [], trace))
                 out = self._run_tool(call.name, call.input, trace, citations,
-                                     retrieved_clause_ids, gap_texts, question)
+                                     retrieved_clause_ids, gap_texts, structural_texts, question)
                 results.append({"type": "tool_result", "tool_use_id": call.id,
                                 "content": json.dumps(out)})
             messages.append({"role": "user", "content": results})

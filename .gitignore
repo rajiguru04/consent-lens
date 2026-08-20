@@ -10,6 +10,7 @@ corpus/vectors.npy
 # PERSONAL — never publish. Contains interview context and self-assessment.
 consent-lens-build-brief.md
 BUILD-PLAN.md
+linkedin-post*.md
 
 .DS_Store
 ~$*

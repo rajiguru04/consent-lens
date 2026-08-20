@@ -173,6 +173,16 @@ model is allowed to treat as a citable source). Publishing this outcome as-is on
 page rather than re-rolling for a cleaner result: `AUDIT_FAILED` is the guard correctly
 blocking an ungrounded claim, which is the mechanism the whole product exists to demonstrate.
 
+**Third addendum, after entry 11's precedent fix.** Re-ran the full suite: this same question
+(and Q1) still hit `AUDIT_FAILED`, confirming entry 11 doesn't touch this path — and correctly
+so. Entry 11 only helps when the model supplies NO citations and its claim is precedent-
+covered; here the model actively puts `evidence` text into the `answer` tool's `citations`
+array as if it were real, which the membership check (entry 3/10) still correctly rejects as
+fabricated. Two of seven demo questions now genuinely improved this session (Q2, Q3: `ABSTAINED`
+→ `ANSWERED`); this specific behavior remains open, and the fix is different from entry 11's —
+the model needs to stop reaching for `citations` at all when it only has register reasoning,
+not corpus clauses, to offer.
+
 ---
 
 ### 5 — `abstain()` bypasses both guards entirely
@@ -371,6 +381,90 @@ regression set: real clause paraphrased (accept), real clause exact-format (acce
 (accept) — all 5 match expected outcomes, no regressions.
 
 ---
+
+### 11 — the exposure register had no path to a passing answer, at all
+**Asked:** *"I uploaded my ICICI bank statement for home loan processing with another bank.
+Will my bank account be subject to fraud?"* — user-reported, after using the deployed app
+directly, framed as "is my RAG not comprehensive enough?"
+**Answered:** `ABSTAINED (ROUTE_NOT_GOVERNED)`, with the actual reasoning (route correctly
+identified as `PDF_UPLOAD`/ungoverned, exposure register correctly found: no debit capability,
+but salary/EMI/account-number profiling risk) discarded and replaced by the generic fallback.
+**Wrong because:** this was misdiagnosed at first as a retrieval-coverage problem — it isn't.
+`identify_route` and `check_exposure_register` both worked correctly. The real cause: **all
+three** exposure register entries (`eCAS`, `bank statement PDF`, even `Account Aggregator
+consent`) are `verified=False`, sourced to `"Author's assessment from domain knowledge"` —
+never corpus-cited. So any answer drawing on the register had no real citation to attach, and
+the citation guards correctly refused to let it through uncited — on `answer()` (entry
+3/10's membership check) as much as `abstain()` (entry 5/7's guard, no gap-register precedent
+covers exposure content). **Every exposure-driven question was structurally blocked before
+this fix, regardless of what the corpus contains** — not a narrow miss, the entire mechanism
+the demo calls "the exposure register" (README) had no working exit.
+**Class:** `generation` — though it sits closer to an architecture gap than a single bug: a
+whole category of legitimate, correctly-reasoned answers had no passing path.
+**Fixed?** yes, deliberately choosing "common sense within the guardrails" over "make every
+claim corpus-cited" (user's explicit call, given both options). `guard.audit()` and
+`guard.audit_abstain()` (entry 7) merged into one `guard.audit_claims()`: a factual sentence
+passes with a real citation (existing rule, unchanged) OR by substantially restating a known
+precedent — now `identify_route`'s structural note and the exposure register's
+`does_not_enable`/`does_enable` text, in addition to entry 7's `Gap.user_text` — word-overlap
+matched, not exact. Passing on precedent alone appends a visible disclaimer
+(`COMMON_SENSE_DISCLAIMER`) so the boundary between "cited fact" and "structural reasoning,
+not sourced from a document" stays honest rather than blurred. Calibration was not a guess:
+the gap-register threshold (0.6) still failed the real captured case (0.25 / 0.52
+sentence-coverage) because a model restating structural reasoning in flowing prose shares far
+less literal vocabulary than it does when closely paraphrasing pre-written text.
+
+First calibration pass (0.5) still failed the actual motivating case once entry 12's route
+fix let `identify_route` classify correctly: the model's real abstain text combined the route
+note AND the exposure register into one synthesized sentence ("uploaded, so ungoverned, and
+it doesn't carry credentials either"), scoring only 0.20 / 0.31 against either precedent
+*separately* — because `covered_by_precedent` was checking per-precedent max, not their
+union, and a sentence legitimately drawing on two tools called the same turn will never score
+well against either alone. Fixed by checking the union of all retrieved precedents' vocabulary
+instead (still bounded — only what tools actually returned this conversation, never the whole
+corpus); that raised the same sentence to 0.43. Threshold then re-picked empirically at 0.4 —
+the highest value that passes both real cases (this one and entry 7's gap paraphrase) while
+still rejecting every adversarial case tested (entry 5's unrelated uncited claim, the
+fabricated-clause case, and a sentence built specifically to probe this exact change — real
+vocabulary overlap with a precedent, but asserting something false, "...is completely safe
+from any kind of misuse" — still correctly rejected, both on coverage and by
+`assurance_check()` as a backstop). Margin checked, not assumed: 0.35 and 0.3 also pass the
+full battery, so 0.4 isn't sitting at the edge of what it needs to reject.
+
+**Live end-to-end confirmation**, the user's exact original question, after all three fixes
+(entry 11's precedent mechanism, entry 12's route-pattern fix, and the union-coverage
+correction above): *"I uploaded my ICICI bank statement for home loan processing with another
+bank. Will my bank account be subject to fraud?"* now returns a real, honest, correctly-hedged
+answer — *"You uploaded a PDF statement directly, which is not governed by the Account
+Aggregator consent framework. The corpus does not cover what happens to documents uploaded
+this way or what security practices the receiving organisation uses."* — with the disclaimer
+attached, `audit_passed: true`, `assurance_passed: true`. Previously: the generic fallback,
+three separate times, for three different reasons.
+
+---
+
+### 12 — route classification broke on a named bank inserted mid-phrase
+**Asked:** same question as entry 11, re-run after the entry-11 fix.
+**Answered:** `identify_route` returned `UNKNOWN` for *"uploaded my ICICI bank statement..."*
+— on the SAME question that had correctly classified as `PDF_UPLOAD` moments earlier, without
+the bank name.
+**Wrong because:** `ROUTE_PATTERNS`' `PDF_UPLOAD` regex required `"upload(ed)? (my |the
+)?(bank )?statement"` — a rigid adjacency between "my/the" and "statement" that "ICICI"
+breaks by sitting in between. Real users name their bank. Same defect shape as entries 2 and
+8 (a rigid regex tuned against the README's own example phrasing, not against realistic
+named-entity variation) — and this is the THIRD time this exact shape has surfaced, now
+clearly a pattern in how these registers get written, not a one-off. With route stuck at
+`UNKNOWN`, entry 11's fix had no route-note precedent to draw on either, so the model's
+otherwise-correct reasoning failed the guard a second time for a compounding reason.
+**Class:** `retrieval` — the now-familiar imperfect fit (fourth entry in this bucket:
+1/2/8/12 — a `guard`/pattern-matching class is overdue if this taxonomy gets revisited).
+**Fixed?** yes. Added a bounded word-gap, `(?:\w+\s+){0,5}`, between the anchor word and
+"statement" in both `PDF_UPLOAD` and `ECAS` (same defect shape existed in both). Verified
+against 6 real phrasings including the original ICICI case and a longer one ("forwarded my
+mutual fund holding CAS statement by email" — needed the wider `{0,5}` bound; `{0,3}` still
+missed it) — all 6 correctly classified. Re-verified 3 adversarial/unrelated sentences
+(including one deliberately padded with extra words around unrelated uses of "statement")
+still correctly return `UNKNOWN` — the widened bound didn't loosen false-positive risk.
 
 <!-- Template — copy per entry.
 

@@ -7,8 +7,9 @@ This is the product, not a safety wrapper around it. Two mechanisms:
                   asked to "please refuse advice questions" can be argued out of it;
                   a branch in a function cannot.
 
-  2. audit()      runs AFTER generation. Every factual sentence must map to a
-                  retrieved citation, or the answer is discarded and we abstain.
+  2. audit_claims()  runs AFTER generation. Every factual sentence must map to a
+                  retrieved citation OR a known precedent, or the answer is
+                  discarded and we abstain.
 
 Both are deliberately boring and readable. That is the point — the mechanism has
 to be demonstrable, not merely claimed.
@@ -113,54 +114,78 @@ def assurance_check(answer: str) -> tuple[bool, list[str]]:
     return (not hits), hits
 
 
-def audit(answer: str, citations: list[str]) -> tuple[bool, list[str]]:
-    """Every factual sentence needs a citation behind the answer.
-
-    Crude by design: it checks that an answer making claims is not citation-free.
-    Refusals and abstentions are exempt — a statement about the system's own
-    boundaries is not a claim about the corpus.
-
-    Returns (ok, offending_sentences).
-    """
-    sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", answer) if s.strip()]
-    factual = [s for s in sentences if not HEDGES.match(s) and len(s.split()) > 4]
-    if factual and not citations:
-        return False, factual
-    return True, []
-
-
 def _words(s: str) -> set[str]:
     return set(re.findall(r"[a-z]+", s.lower()))
 
 
-def audit_abstain(text: str, precedents: list[str], overlap_threshold: float = 0.6
-                   ) -> tuple[bool, list[str]]:
-    """Like audit(), but for abstain's citation-free text.
+def audit_claims(text: str, citations: list[str], precedents: list[str],
+                  overlap_threshold: float = 0.4
+                  ) -> tuple[bool, list[str], list[str]]:
+    """Every factual sentence needs a citation behind it, or a known precedent —
+    common sense within the guardrails, not just citation or nothing.
 
-    abstain never carries a citation, so by audit()'s own rule every factual sentence
-    in it would fail. That's the right default (found live: entry 5, an uncited
-    paraphrase of a clause smuggled into an abstain call) — but it also blocked a
-    LEGITIMATE case: the gap register's pre-written, human-vetted `Gap.user_text`,
-    handed to the model as `suggested_wording` specifically so it can be used (found
-    live: entry 7, a correct joint-accounts abstain discarded anyway because the model
-    paraphrased that precedent instead of copying it verbatim).
+    A factual sentence passes if EITHER `citations` is non-empty (audit()'s
+    original coarse rule — kept as-is, not redesigned to per-sentence here) OR
+    the sentence substantially restates a known precedent — a Gap.user_text, a
+    route's structural note, or an Exposure register entry this conversation
+    actually retrieved — measured by word-overlap coverage of the SENTENCE by
+    the precedent, not the reverse, so a sentence introducing a new claim
+    alongside a real paraphrase still fails. Precedent-only passes are returned
+    separately (`precedent_backed`) so the caller can visibly label them: "a
+    bank statement carries no login credentials" is true and doesn't need a
+    regulator to have written it down, but the answer must say so honestly
+    rather than dressing it up as a citation it doesn't have. Found live: route
+    identification and the exposure register (both self-authored structural
+    reasoning — which framework governs this route, does an eCAS or bank
+    statement carry credentials?) were never corpus-cited, so EVERY
+    route/exposure-driven answer was structurally blocked before this — not a
+    retrieval gap, an architecture gap. This is also what replaced
+    audit_abstain(): abstain's citation-free text needed exactly this same
+    precedent-or-nothing check (entry 7, gap register only); generalizing it
+    here extends the same mechanism to route/exposure reasoning and to
+    answer()'s citation-bearing path.
 
-    So: a factual sentence is allowed through only if it substantially restates a
-    known precedent (a Gap.user_text this conversation actually retrieved), measured
-    by word overlap rather than exact match so paraphrasing doesn't falsely fail.
-    Threshold is deliberately high and the overlap is measured as coverage of the
-    SENTENCE by the precedent, not the reverse — a sentence introducing new claims
-    alongside a real paraphrase should still fail, since letting a fabricated claim
-    ride along with a legitimate one is worse than over-rejecting a fine paraphrase.
+    Default threshold is 0.4, not the 0.6 the gap-register case (entry 7) was
+    tuned against — calibrated empirically, twice. First finding: a model
+    restating structural reasoning in flowing prose (not copying register
+    phrasing near-verbatim, the way it tends to with Gap.user_text) naturally
+    shares less literal vocabulary with any ONE precedent, even when correct —
+    a real PDF-upload case scored 0.20/0.31 against its two precedents
+    (a route note and an exposure register entry) taken separately. Second
+    finding: a synthesized sentence often draws on BOTH tools called that
+    turn at once ("uploaded, so ungoverned, and it doesn't carry credentials
+    either") — hence `covered_by_precedent` checks the UNION of all
+    precedents' vocabulary, not the max of any single one; that same sentence
+    scores 0.43 against the union. 0.4 is the highest threshold that passes
+    both real motivating cases while still rejecting every adversarial one
+    tested, including a sentence that shares real vocabulary with a precedent
+    but asserts something false ("...is completely safe from any kind of
+    misuse") — that still fails, both on coverage and on assurance_check() as
+    a backstop; and margin was checked, not assumed — 0.35 and 0.3 also pass
+    the same battery, so 0.4 isn't a threshold sitting right at the edge of
+    the adversarial cases it needs to reject.
     """
     sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", text) if s.strip()]
     factual = [s for s in sentences if not HEDGES.match(s) and len(s.split()) > 4]
     precedent_words = [_words(p) for p in precedents if p]
+    # Union, not per-precedent max: a sentence combining a route note and an exposure
+    # register claim into one synthesized statement ("uploaded, so ungoverned, and it
+    # doesn't carry credentials either") draws on BOTH tools called this turn — found
+    # live: entry 11's real case scored 0.20/0.31 against either precedent alone but
+    # 0.43 against their union. Still bounded: the pool is only what tools actually
+    # returned this conversation, never the whole corpus.
+    all_precedent_words = set().union(*precedent_words) if precedent_words else set()
 
-    def covered(sentence: str) -> bool:
+    def covered_by_precedent(sentence: str) -> bool:
         sw = _words(sentence)
-        return bool(sw) and any(
-            pw and len(sw & pw) / len(sw) >= overlap_threshold for pw in precedent_words)
+        return bool(sw) and len(sw & all_precedent_words) / len(sw) >= overlap_threshold
 
-    bad = [s for s in factual if not covered(s)]
-    return (not bad), bad
+    unsupported, precedent_backed = [], []
+    for s in factual:
+        if citations:
+            continue
+        if covered_by_precedent(s):
+            precedent_backed.append(s)
+        else:
+            unsupported.append(s)
+    return (not unsupported), unsupported, precedent_backed

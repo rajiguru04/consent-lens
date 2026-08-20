@@ -1,0 +1,60 @@
+{
+  "question": "I uploaded my ICICI bank statement for home loan processing with another bank. Will my bank account be subject to fraud.",
+  "outcome": "ABSTAINED",
+  "text": "You uploaded a PDF statement directly, which is not governed by the Account Aggregator consent framework. The corpus does not cover what happens to documents uploaded this way or what security practices the receiving organisation uses. (Note: part of this is general reasoning about what this type of document or artefact contains \u2014 e.g. whether it carries login credentials \u2014 not a citation to a specific regulatory clause.)",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "identify_route",
+      "input": {
+        "description": "uploaded my ICICI bank statement for home loan processing with another bank"
+      },
+      "output": {
+        "route": "PDF_UPLOAD",
+        "governed": false,
+        "note": "Statement uploaded directly to a service. No consent artefact governs what happens to it afterwards."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "check_exposure_register",
+      "input": {
+        "artefact": "bank statement PDF"
+      },
+      "output": {
+        "found": true,
+        "artefact": "bank statement PDF",
+        "carries_credentials": false,
+        "does_not_enable": "A debit by itself. Moving money out requires authentication the statement does not contain.",
+        "does_enable": "Salary, balance, EMI and spending profiling, and the account number \u2014 enough to make a targeted approach credible.",
+        "evidence": "Author's assessment from domain knowledge.",
+        "verified": false,
+        "reminder": "State capability only. Never assert the user is safe."
+      }
+    },
+    {
+      "step": "abstain",
+      "reason": "ROUTE_NOT_GOVERNED",
+      "audit_passed": true,
+      "unsupported": [],
+      "precedent_backed": [
+        "You uploaded a PDF statement directly, which is not governed by the Account Aggregator consent framework."
+      ],
+      "assurance_passed": true,
+      "assurance_phrases": []
+    }
+  ]
+}

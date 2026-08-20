@@ -1,0 +1,216 @@
+{
+  "question": "I used Anumati App to authorize sharing my bank statement for home loan processing. Will my bank account be subject to fraud.",
+  "outcome": "ANSWERED",
+  "text": "The RBI Master Direction states that \"Account Aggregator shall not support transactions by customers.\" An AA consent grants access to specified financial information\u2014like your bank statement\u2014but does not enable any movement of money or transactions on your account. The consent artefact is purpose-limited, time-bound, and revocable, meaning it only allows the home loan processor to retrieve the data you approved, for the period you agreed to, and you can cancel it at any time.",
+  "citations": [
+    "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 5 (retrieved 2026-08-20)",
+    "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.3 (retrieved 2026-08-20)"
+  ],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "identify_route",
+      "input": {
+        "description": "Used Anumati App to authorize sharing bank statement for home loan processing"
+      },
+      "output": {
+        "route": "AA",
+        "governed": true,
+        "note": "Account Aggregator route. Governed: purpose-limited, time-bound, revocable, and recorded in a consent artefact."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "check_exposure_register",
+      "input": {
+        "artefact": "AA consent artefact"
+      },
+      "output": {
+        "found": true,
+        "artefact": "Account Aggregator consent",
+        "carries_credentials": false,
+        "does_not_enable": "Any transaction. AA is a data-sharing rail, not a payment rail \u2014 a consent grants read access to specified data, not the ability to move money.",
+        "does_enable": "Access to the data types named in the consent, for the period it covers.",
+        "evidence": "To verify against the DEPA specification and RBI Master Direction during ingestion.",
+        "verified": false,
+        "reminder": "State capability only. Never assert the user is safe."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "AA consent does not enable transactions or debits, read-only access"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "Design Principles for Informed Consent > Underlying Principles: > Transparent, without cognitive overload:",
+            "document": "Sahamati \u2014 Design Principles for Informed Consent",
+            "authority": "sro-guidance",
+            "text": "- What data sources am I sharing?\n  - Both FIP and the account within the FIP for which consent is being requested should be clearly called out.\n  - FI Type should be called out clearly indicating in the form of: bank account data, Mutual Fund Data, Insurance Information, etc.\n- What information am I sharing for each data source?\n  - Both account-specific information (balance, transactions, etc.) and user-specific information (PAN, DoB) must be called out either at the consent stage or at the linking stage (if the intention to link is considered as implied consent).\n  - Any applied data filters should be called out.\n- Who am I sharing my information with?\n  - List of entities that will have access to this data must be called out on the screen where user consent is being collected.\n- How long am I sharing my information for?\n  - Duration for which said entity or entities can access the user\u2019s data (consent life).\n  - Duration for which said entity or entities will be able to store the user\u2019s data (data life).\n- Why am I sharing this data?\n  - Clear callout of the purpose behind granting access to this information. Needs to be meaningful to the user. For example - \u201cPersonal finance m",
+            "score": 0.482,
+            "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Underlying Principles: > Transparent, without cognitive overload: (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.2",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.2 Upon being presented the consent artefact, the Financial Information provider shall verify:\n\n (a) validity of consent\n\n (b) specified dates and usage; and\n\n (c) the credentials of the Account Aggregator\n\n through appropriate means.",
+            "score": 0.466,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.2 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 6.3",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "6.3 The consent of the customer obtained by the Account Aggregator shall be a standardised consent artefact which shall contain the following details, namely:\u2014\n\n identity of the customer and optional contact information;\n\n \n\n the nature of the financial information requested;\n\n \n\n purpose of collecting such information;\n\n \n\n the identity of the recipients of the information, if any;\n\n \n\n URL or other address to which notification needs to be sent every time the consent artefact is used to access information\n\n \n\n Consent creation date, expiry date, identity and signature/ digital signature of the Account Aggregator; and\n\n \n\n any other attribute as may be prescribed by the Bank.",
+            "score": 0.46,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.3 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 6.7",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "6.7 An electronic consent artefact shall be capable of being logged, audited and verified.",
+            "score": 0.453,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.7 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "Design Principles for Informed Consent > Consent Screen(L1):",
+            "document": "Sahamati \u2014 Design Principles for Informed Consent",
+            "authority": "sro-guidance",
+            "text": "- Purpose\n- Accounts Overview\n- Consent life\n- Data Life\n- Fetch type - one time or recurring\n- Frequency\n- Action to grant consent\n- Action to exit the flow\n- Trust markers\n- Callout for the ability to cancel consent",
+            "score": 0.431,
+            "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Consent Screen(L1): (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "Account Aggregator cannot enable payment debit transfer transaction withdrawal"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "cl. 15",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "15. Requirement to obtain prior approval of the Bank for acquisition or transfer of control of Account Aggregators \u2013",
+            "score": 0.57,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 15 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 4.2.3",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "4.2.3 The Bank may, after being satisfied that the conditions specified under paragraph 4.2.2 are fulfilled, grant in-principle approval for registering as an Account Aggregator subject to such conditions as it may consider fit to impose.",
+            "score": 0.499,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 4.2.3 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. (1)",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "(1) In these directions unless the context otherwise requires,\n\n i. \u201cAccount Aggregator\u201d means a non-banking financial company as notified under in sub-clause (iii) of clause (f) of section 45-I of the Act, that undertakes the business of an account aggregator, for a fee or otherwise, as defined at clause (iv) of sub-section 1 of section 3 of these directions.\n\n ii. \"bank\" means -\n\n a banking company; or\n\n \n\n a corresponding new bank; or\n\n \n\n the State Bank of India; or\n\n \n\n a subsidiary bank; or\n\n \n\n such other bank which the Bank may, by notification, specify for the purposes of these directions; and\n\n \n\n a co-operative bank as defined under clause (cci) of section 5 read with section 56 of the Banking Regulation Act, 1949 (10 of 1949);\n\n \n\n iii. \"Banking company\" means a banking company as defined in clause (c) of section 5 of the Banking Regulation Act, 1949 (10 of 1949);\n\n iv. \u201cbusiness of an account aggregator\u201d means the business of providing under a contract, the service of,\n\n retrieving or collecting such financial information pertaining to its customer, as may be specified by the Bank from time to time;\n\n and\n\n consolidating, organizing and presenting such information to t",
+            "score": 0.485,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. (1) (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 4.1",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "4.1 (a) No entity other than a company shall undertake the business of an Account Aggregator.\n\n (b) No company shall commence or carry on the business of an Account Aggregator without obtaining a certificate of registration from the Bank.\n\n Provided that , entities being regulated by other financial sector regulators and aggregating only those accounts relating to the financial information pertaining to customers of that particular sector will be excluded from the above registration requirement.\n\n (c) Subject to the above proviso , entities that are undertaking the business of an Account Aggregator, as defined at paragraph 3(iv) of these directions, as on the date of effect of these directions, shall apply for registration as an Account Aggregator, in compliance with these directions, to the Bank within a month from that date. Such companies, which have applied to the Bank for registration as an NBFC - Account Aggregator, shall be permitted to continue the business of an Account Aggregator till their application for issue of Certificate of Registration is rejected or twelve months from date of the application, whichever is earlier.\n\n (d) Every company seeking registration with the ",
+            "score": 0.453,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 4.1 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 15.1",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "15.1 (i) The prior written permission of the Bank shall be required for -\n\n a) any takeover or acquisition of control of an Account Aggregator, which may or may not result in change of management;\n\n b) any change in the shareholding of an Account Aggregator, including progressive increases over time, which would result in acquisition / transfer of shareholding of 26 per cent or more of the paid up equity capital of the Account Aggregator.\n\n Provided that , prior approval would not be required in case of any shareholding becoming 26% or more due to buyback of shares / reduction in capital where it has approval of a competent Court. The same is to be reported to the Bank not later than one month from its occurrence;\n\n c) any change in the management of the Account Aggregator which would result in change in more than 30 per cent of the directors, excluding independent directors.\n\n Provided that , prior approval would not be required in case of directors who get re-elected on retirement by rotation.\n\n d) any change in shareholding that will give the acquirer a right to nominate a director.",
+            "score": 0.434,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 15.1 (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "Account Aggregator retrieves collects consolidates financial information only no transaction execution"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "cl. 7.6",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.6 Use of information by Account Aggregator and Financial Information user",
+            "score": 0.612,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.6 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 5",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "5. Duties and Responsibilities of an Account Aggregator\n\n Account Aggregator shall provide services to a customer based on the customer\u2019s explicit consent.\n\n \n\n Account Aggregator shall ensure that the providing of services to a customer. shall be backed by appropriate agreements/ authorisations between the Account Aggregator, the customer and the Financial information providers.\n\n \n\n Account Aggregator shall not support transactions by customers.\n\n \n\n Account Aggregator shall ensure appropriate mechanisms for proper customer identification.\n\n \n\n Account Aggregator shall share information as referred to under paragraph 3(iv) only with the customer to whom it relates or any other financial information user as authorized by the customer in accordance with the terms of the consent provided by the customer.\n\n \n\n Account Aggregator shall not undertake any other business other than the business of account aggregator. Deployment of investible surplus by an Account Aggregator in instruments, not for trading, shall however be permitted.\n\n \n\n No financial information of the customer accessed by the Account Aggregator from the financial information providers shall reside with the Account Aggr",
+            "score": 0.558,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 5 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "full page",
+            "document": "RBI Kehta Hai \u2014 AA",
+            "authority": "public-awareness",
+            "text": "No more delays in loan processing...\n\n \n Register today with an Account Aggregator. It\u2019s easy, saves your time and money!\n\n \n \n\n\n \n\n\n \n\n\n \n\n\n \n \n \n \n \n \n Provide details of your financial asset information in real time \n\n\n \n Share your financial information through an Account Aggregator in a secured manner as it does not see or store your financial information\n\n\n Account Aggregators will share information with lending banks and NBFCs only on receiving clear instructions from you",
+            "score": 0.552,
+            "citation": "RBI Kehta Hai \u2014 AA, full page (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 9",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "9. Technical Specification for all participants of the Account Aggregator ecosystem",
+            "score": 0.541,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 9 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.7",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.7 Joining the Account Aggregator Ecosystem as Financial Information User 9 \n\n With a view to ensure efficient and optimum utilisation of the Account Aggregator ecosystem, regulated entities of the Reserve Bank joining the Account Aggregator ecosystem as Financial Information User shall necessarily join as Financial Information Provider also, if they hold the specified financial information and fall under the definition of Financial Information Provider.",
+            "score": 0.538,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.7 (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "guard.audit",
+      "passed": true,
+      "unsupported": [],
+      "unverified_citations": []
+    },
+    {
+      "step": "guard.assurance",
+      "passed": true,
+      "phrases": []
+    }
+  ]
+}

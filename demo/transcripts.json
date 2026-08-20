@@ -2,8 +2,8 @@
   {
     "question": "I forwarded my eCAS to a portfolio advisory service to get free advice. What can they do with my data now?",
     "proves": "Route identification + abstention. The corpus does not govern this route \u2014 the correct answer says so, then states what AA would have given.",
-    "outcome": "ABSTAINED",
-    "text": "I can't answer that from these documents. (ROUTE_NOT_GOVERNED)",
+    "outcome": "AUDIT_FAILED",
+    "text": "I can't answer that without pointing you to the clause it comes from.",
     "citations": [],
     "trace": [
       {
@@ -34,7 +34,7 @@
         "step": "tool",
         "tool": "check_exposure_register",
         "input": {
-          "artefact": "eCAS forwarded to advisory service"
+          "artefact": "eCAS file forwarded by email"
         },
         "output": {
           "found": true,
@@ -48,24 +48,25 @@
         }
       },
       {
-        "step": "abstain",
-        "reason": "ROUTE_NOT_GOVERNED",
-        "audit_passed": false,
-        "unsupported": [
-          "You forwarded a file; that sits outside the Account Aggregator framework and no consent document or technical specification governs what the recipient may do.",
-          "The statement itself carries no credentials and therefore does not by itself enable anyone to redeem, transfer or debit your holdings, but it does give complete visibility of what you hold and where\u2014which the register notes can make phishing far more convincing."
+        "step": "guard.audit",
+        "passed": true,
+        "unsupported": [],
+        "unverified_citations": [
+          "Author's assessment from domain knowledge. An eCAS is a reporting document issued by an RTA or depository; it contains no authentication material.",
+          "Consolidated account statement shared by email or file. The statement's issuance is regulated, but forwarding it is not governed by any consent framework \u2014 no consent artefact, no purpose limitation, no expiry, no revocation, no audit trail."
         ],
-        "assurance_passed": true,
-        "assurance_phrases": []
+        "precedent_backed": []
       }
     ]
   },
   {
     "question": "My relationship manager said I'd get an OTP and should approve the next screen for my home loan. What did I approve?",
     "proves": "Grounded retrieval with citation, in the mediated-consent scenario where the person guiding you benefits from your approval.",
-    "outcome": "ABSTAINED",
-    "text": "I can't answer that from these documents. (NOT_IN_CORPUS)",
-    "citations": [],
+    "outcome": "ANSWERED",
+    "text": "Without knowing how your data was shared, I can't tell you what you approved. If it was through an Account Aggregator, you approved a consent artefact that names what financial information was requested, the purpose, who will receive it, and how long the consent lasts. If it was another method (like giving login credentials or uploading documents), different rules or no formal consent framework may apply.",
+    "citations": [
+      "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.3 (retrieved 2026-08-20)"
+    ],
     "trace": [
       {
         "step": "escalate.check",
@@ -93,44 +94,34 @@
       },
       {
         "step": "tool",
-        "tool": "check_gap_register",
-        "input": {
-          "topic": "OTP approval for home loan without knowing what screen showed"
-        },
-        "output": {
-          "found": false
-        }
-      },
-      {
-        "step": "tool",
         "tool": "retrieve_clauses",
         "input": {
-          "query": "OTP approval consent screen what user approves"
+          "query": "OTP consent approval home loan what does user approve"
         },
         "output": {
           "clauses": [
             {
-              "clause_id": "Design Principles for Informed Consent > Consent Screen(L1):",
-              "document": "Sahamati \u2014 Design Principles for Informed Consent",
-              "authority": "sro-guidance",
-              "text": "- Purpose\n- Accounts Overview\n- Consent life\n- Data Life\n- Fetch type - one time or recurring\n- Frequency\n- Action to grant consent\n- Action to exit the flow\n- Trust markers\n- Callout for the ability to cancel consent",
-              "score": 0.577,
-              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Consent Screen(L1): (retrieved 2026-08-20)"
+              "clause_id": "cl. 6.3",
+              "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+              "authority": "regulation",
+              "text": "6.3 The consent of the customer obtained by the Account Aggregator shall be a standardised consent artefact which shall contain the following details, namely:\u2014\n\n identity of the customer and optional contact information;\n\n \n\n the nature of the financial information requested;\n\n \n\n purpose of collecting such information;\n\n \n\n the identity of the recipients of the information, if any;\n\n \n\n URL or other address to which notification needs to be sent every time the consent artefact is used to access information\n\n \n\n Consent creation date, expiry date, identity and signature/ digital signature of the Account Aggregator; and\n\n \n\n any other attribute as may be prescribed by the Bank.",
+              "score": 0.478,
+              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.3 (retrieved 2026-08-20)"
             },
             {
-              "clause_id": "Design Principles for Informed Consent > Underlying Principles: > Empowering, with meaningful control:",
-              "document": "Sahamati \u2014 Design Principles for Informed Consent",
-              "authority": "sro-guidance",
-              "text": "- Am I demonstrating a deliberate action?\n  - There should be a clear and explicit action to grant consent.\n  - There should be a pathway for the user to exit the flow without granting consent.\n- Do I feel I\u2019m in control of my data even after I\u2019ve possibly consented?\n  - Users should be told that they can cancel (revoke) anytime.\n  - Users should be told where they can manage their consent from.\n- Do I know that I\u2019ve actually given consent?\n  - There should be clear indications of success/failure. This includes aural cues (think transaction success sound on PhonePe, GPay, Paytm), SMS, and other notifications.\n  - Call out situations where the frequencies are uncommon, for example, if a PFM requests consent for 1000 times a day, that should be called out as unusually high.\n- Should not overwhelm the user.\n  - Is this too much information for me to process?\n  - Most important details should be present on the L1 screen.\n  - Other details can stay one level deep (under \u2018view details\u2019 or \u2018view more\u2019 or similar).",
-              "score": 0.568,
-              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Underlying Principles: > Empowering, with meaningful control: (retrieved 2026-08-20)"
+              "clause_id": "cl. 7.2",
+              "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+              "authority": "regulation",
+              "text": "7.2 Upon being presented the consent artefact, the Financial Information provider shall verify:\n\n (a) validity of consent\n\n (b) specified dates and usage; and\n\n (c) the credentials of the Account Aggregator\n\n through appropriate means.",
+              "score": 0.466,
+              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.2 (retrieved 2026-08-20)"
             },
             {
               "clause_id": "cl. 6.7",
               "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
               "authority": "regulation",
               "text": "6.7 An electronic consent artefact shall be capable of being logged, audited and verified.",
-              "score": 0.54,
+              "score": 0.459,
               "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.7 (retrieved 2026-08-20)"
             },
             {
@@ -138,39 +129,43 @@
               "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
               "authority": "regulation",
               "text": "6.4 The consent artefact can also be obtained in electronic form.",
-              "score": 0.522,
+              "score": 0.451,
               "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.4 (retrieved 2026-08-20)"
             },
             {
-              "clause_id": "Design Principles for Informed Consent > Underlying Principles: > Trustworthy, while creating digital and financial confidence:",
+              "clause_id": "Design Principles for Informed Consent > Consent Screen(L1):",
               "document": "Sahamati \u2014 Design Principles for Informed Consent",
               "authority": "sro-guidance",
-              "text": "- Do I feel that I can trust this screen?\n  - The screen should have certain trust markers.\n  - Clarify the ability to cancel consent before action for providing consent.\n  - Issue a data receipt to indicate that the data share was successful and as proof of data being shared with a particular entity.",
-              "score": 0.511,
-              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Underlying Principles: > Trustworthy, while creating digital and financial confidence: (retrieved 2026-08-20)"
+              "text": "- Purpose\n- Accounts Overview\n- Consent life\n- Data Life\n- Fetch type - one time or recurring\n- Frequency\n- Action to grant consent\n- Action to exit the flow\n- Trust markers\n- Callout for the ability to cancel consent",
+              "score": 0.437,
+              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Consent Screen(L1): (retrieved 2026-08-20)"
             }
           ]
         }
       },
       {
-        "step": "abstain",
-        "reason": "NOT_IN_CORPUS",
-        "audit_passed": false,
-        "unsupported": [
-          "You didn't describe which screen you saw or how data was being shared (Account Aggregator, PDF upload, or something else).",
-          "The Account Aggregator consent screen must show purpose, which accounts, and how often data will be fetched\u2014but I can't tell you what *your* screen said without knowing which route you used."
-        ],
-        "assurance_passed": true,
-        "assurance_phrases": []
+        "step": "guard.audit",
+        "passed": true,
+        "unsupported": [],
+        "unverified_citations": [],
+        "precedent_backed": []
+      },
+      {
+        "step": "guard.assurance",
+        "passed": true,
+        "phrases": []
       }
     ]
   },
   {
     "question": "Can I take back a consent I gave? Do they delete what they already collected?",
     "proves": "The consent-expiry vs data-retention distinction \u2014 or honest abstention if the deletion rule lives outside this corpus.",
-    "outcome": "ABSTAINED",
-    "text": "I can't answer that from these documents. (SPEC_EXCLUDES)",
-    "citations": [],
+    "outcome": "ANSWERED",
+    "text": "Yes, you can revoke consent at any time, and the Account Aggregator must provide you a way to do so. The regulations say data can only be used \"as may be specified in the consent artefact,\" but they do not expressly require the recipient (Financial Information User) to delete data already collected before you revoked. What happens to already-collected data is not settled by the RBI Master Direction.",
+    "citations": [
+      "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.6 (retrieved 2026-08-20)",
+      "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.6.2 (retrieved 2026-08-20)"
+    ],
     "trace": [
       {
         "step": "escalate.check",
@@ -188,7 +183,7 @@
         "step": "tool",
         "tool": "retrieve_clauses",
         "input": {
-          "query": "revoke consent withdraw consent delete data already collected"
+          "query": "revoke consent withdrawal delete data already collected"
         },
         "output": {
           "clauses": [
@@ -197,40 +192,40 @@
               "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
               "authority": "regulation",
               "text": "6.6 An Account Aggregator shall also provide its customers a functionality to revoke consent to obtain information that is rendered accessible by a consent artefact, including the ability to revoke consent to obtain parts of such information. Upon revocation, a fresh consent artefact shall be shared with the Financial Information provider.",
-              "score": 0.585,
+              "score": 0.581,
               "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.6 (retrieved 2026-08-20)"
-            },
-            {
-              "clause_id": "Design Principles for Informed Consent > Consent Screen(L1):",
-              "document": "Sahamati \u2014 Design Principles for Informed Consent",
-              "authority": "sro-guidance",
-              "text": "- Purpose\n- Accounts Overview\n- Consent life\n- Data Life\n- Fetch type - one time or recurring\n- Frequency\n- Action to grant consent\n- Action to exit the flow\n- Trust markers\n- Callout for the ability to cancel consent",
-              "score": 0.584,
-              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Consent Screen(L1): (retrieved 2026-08-20)"
             },
             {
               "clause_id": "Design Principles for Informed Consent > Underlying Principles: > Empowering, with meaningful control:",
               "document": "Sahamati \u2014 Design Principles for Informed Consent",
               "authority": "sro-guidance",
               "text": "- Am I demonstrating a deliberate action?\n  - There should be a clear and explicit action to grant consent.\n  - There should be a pathway for the user to exit the flow without granting consent.\n- Do I feel I\u2019m in control of my data even after I\u2019ve possibly consented?\n  - Users should be told that they can cancel (revoke) anytime.\n  - Users should be told where they can manage their consent from.\n- Do I know that I\u2019ve actually given consent?\n  - There should be clear indications of success/failure. This includes aural cues (think transaction success sound on PhonePe, GPay, Paytm), SMS, and other notifications.\n  - Call out situations where the frequencies are uncommon, for example, if a PFM requests consent for 1000 times a day, that should be called out as unusually high.\n- Should not overwhelm the user.\n  - Is this too much information for me to process?\n  - Most important details should be present on the L1 screen.\n  - Other details can stay one level deep (under \u2018view details\u2019 or \u2018view more\u2019 or similar).",
-              "score": 0.577,
+              "score": 0.556,
               "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Underlying Principles: > Empowering, with meaningful control: (retrieved 2026-08-20)"
+            },
+            {
+              "clause_id": "Design Principles for Informed Consent > Consent Screen(L1):",
+              "document": "Sahamati \u2014 Design Principles for Informed Consent",
+              "authority": "sro-guidance",
+              "text": "- Purpose\n- Accounts Overview\n- Consent life\n- Data Life\n- Fetch type - one time or recurring\n- Frequency\n- Action to grant consent\n- Action to exit the flow\n- Trust markers\n- Callout for the ability to cancel consent",
+              "score": 0.539,
+              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Consent Screen(L1): (retrieved 2026-08-20)"
             },
             {
               "clause_id": "Design Principles for Informed Consent > Underlying Principles: > Trustworthy, while creating digital and financial confidence:",
               "document": "Sahamati \u2014 Design Principles for Informed Consent",
               "authority": "sro-guidance",
               "text": "- Do I feel that I can trust this screen?\n  - The screen should have certain trust markers.\n  - Clarify the ability to cancel consent before action for providing consent.\n  - Issue a data receipt to indicate that the data share was successful and as proof of data being shared with a particular entity.",
-              "score": 0.486,
+              "score": 0.459,
               "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Underlying Principles: > Trustworthy, while creating digital and financial confidence: (retrieved 2026-08-20)"
             },
             {
-              "clause_id": "Design Principles for Informed Consent > Underlying Principles: > Transparent, without cognitive overload:",
-              "document": "Sahamati \u2014 Design Principles for Informed Consent",
-              "authority": "sro-guidance",
-              "text": "- What data sources am I sharing?\n  - Both FIP and the account within the FIP for which consent is being requested should be clearly called out.\n  - FI Type should be called out clearly indicating in the form of: bank account data, Mutual Fund Data, Insurance Information, etc.\n- What information am I sharing for each data source?\n  - Both account-specific information (balance, transactions, etc.) and user-specific information (PAN, DoB) must be called out either at the consent stage or at the linking stage (if the intention to link is considered as implied consent).\n  - Any applied data filters should be called out.\n- Who am I sharing my information with?\n  - List of entities that will have access to this data must be called out on the screen where user consent is being collected.\n- How long am I sharing my information for?\n  - Duration for which said entity or entities can access the user\u2019s data (consent life).\n  - Duration for which said entity or entities will be able to store the user\u2019s data (data life).\n- Why am I sharing this data?\n  - Clear callout of the purpose behind granting access to this information. Needs to be meaningful to the user. For example - \u201cPersonal finance m",
-              "score": 0.475,
-              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Underlying Principles: > Transparent, without cognitive overload: (retrieved 2026-08-20)"
+              "clause_id": "cl. 6.3",
+              "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+              "authority": "regulation",
+              "text": "6.3 The consent of the customer obtained by the Account Aggregator shall be a standardised consent artefact which shall contain the following details, namely:\u2014\n\n identity of the customer and optional contact information;\n\n \n\n the nature of the financial information requested;\n\n \n\n purpose of collecting such information;\n\n \n\n the identity of the recipients of the information, if any;\n\n \n\n URL or other address to which notification needs to be sent every time the consent artefact is used to access information\n\n \n\n Consent creation date, expiry date, identity and signature/ digital signature of the Account Aggregator; and\n\n \n\n any other attribute as may be prescribed by the Bank.",
+              "score": 0.447,
+              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.3 (retrieved 2026-08-20)"
             }
           ]
         }
@@ -239,7 +234,7 @@
         "step": "tool",
         "tool": "retrieve_clauses",
         "input": {
-          "query": "data deletion after consent revoked data retention FIU delete"
+          "query": "data retention deletion after consent revoked FIU must delete"
         },
         "output": {
           "clauses": [
@@ -248,7 +243,7 @@
               "document": "Sahamati \u2014 Design Principles for Informed Consent",
               "authority": "sro-guidance",
               "text": "- What data sources am I sharing?\n  - Both FIP and the account within the FIP for which consent is being requested should be clearly called out.\n  - FI Type should be called out clearly indicating in the form of: bank account data, Mutual Fund Data, Insurance Information, etc.\n- What information am I sharing for each data source?\n  - Both account-specific information (balance, transactions, etc.) and user-specific information (PAN, DoB) must be called out either at the consent stage or at the linking stage (if the intention to link is considered as implied consent).\n  - Any applied data filters should be called out.\n- Who am I sharing my information with?\n  - List of entities that will have access to this data must be called out on the screen where user consent is being collected.\n- How long am I sharing my information for?\n  - Duration for which said entity or entities can access the user\u2019s data (consent life).\n  - Duration for which said entity or entities will be able to store the user\u2019s data (data life).\n- Why am I sharing this data?\n  - Clear callout of the purpose behind granting access to this information. Needs to be meaningful to the user. For example - \u201cPersonal finance m",
-              "score": 0.448,
+              "score": 0.454,
               "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Underlying Principles: > Transparent, without cognitive overload: (retrieved 2026-08-20)"
             },
             {
@@ -256,7 +251,7 @@
               "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
               "authority": "regulation",
               "text": "6.6 An Account Aggregator shall also provide its customers a functionality to revoke consent to obtain information that is rendered accessible by a consent artefact, including the ability to revoke consent to obtain parts of such information. Upon revocation, a fresh consent artefact shall be shared with the Financial Information provider.",
-              "score": 0.429,
+              "score": 0.454,
               "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.6 (retrieved 2026-08-20)"
             },
             {
@@ -264,24 +259,24 @@
               "document": "DEPA \u2014 Consent Artefact",
               "authority": "specification",
               "text": "expiry-time \n The expiry time of the consent artifact. I:e after this it should be considered invalid.",
-              "score": 0.427,
+              "score": 0.438,
               "citation": "DEPA \u2014 Consent Artefact, para 7 (no clause numbering found) (retrieved 2026-08-20)"
-            },
-            {
-              "clause_id": "Design Principles for Informed Consent > Consent Screen(L1):",
-              "document": "Sahamati \u2014 Design Principles for Informed Consent",
-              "authority": "sro-guidance",
-              "text": "- Purpose\n- Accounts Overview\n- Consent life\n- Data Life\n- Fetch type - one time or recurring\n- Frequency\n- Action to grant consent\n- Action to exit the flow\n- Trust markers\n- Callout for the ability to cancel consent",
-              "score": 0.42,
-              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Consent Screen(L1): (retrieved 2026-08-20)"
             },
             {
               "clause_id": "cl. 7.2",
               "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
               "authority": "regulation",
               "text": "7.2 Upon being presented the consent artefact, the Financial Information provider shall verify:\n\n (a) validity of consent\n\n (b) specified dates and usage; and\n\n (c) the credentials of the Account Aggregator\n\n through appropriate means.",
-              "score": 0.42,
+              "score": 0.434,
               "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.2 (retrieved 2026-08-20)"
+            },
+            {
+              "clause_id": "Design Principles for Informed Consent > Behind other elements(L2) (help, etc.)",
+              "document": "Sahamati \u2014 Design Principles for Informed Consent",
+              "authority": "sro-guidance",
+              "text": "- FI Category\n- FIP Date Range\n- FIP and Account Details\n- Details on how to cancel (possibly under help?)",
+              "score": 0.431,
+              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Behind other elements(L2) (help, etc.) (retrieved 2026-08-20)"
             }
           ]
         }
@@ -290,49 +285,49 @@
         "step": "tool",
         "tool": "retrieve_clauses",
         "input": {
-          "query": "FIU obligations delete data after dataLife expiry storage limits"
+          "query": "FIU Financial Information User delete data retention obligation storage limit"
         },
         "output": {
           "clauses": [
+            {
+              "clause_id": "cl. 7.6.2",
+              "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+              "authority": "regulation",
+              "text": "7.6.2 Where financial information has been provided by a Financial Information provider to an Account Aggregator for transferring to the customer or to a Financial Information user, it shall not be used or disclosed by an Account Aggregator or the Financial Information user except as may be specified in the consent artefact.",
+              "score": 0.479,
+              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.6.2 (retrieved 2026-08-20)"
+            },
+            {
+              "clause_id": "cl. 7",
+              "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+              "authority": "regulation",
+              "text": "7. Sharing of financial information by Financial Information providers upon valid consent artefact being presented",
+              "score": 0.469,
+              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7 (retrieved 2026-08-20)"
+            },
             {
               "clause_id": "Design Principles for Informed Consent > Underlying Principles: > Transparent, without cognitive overload:",
               "document": "Sahamati \u2014 Design Principles for Informed Consent",
               "authority": "sro-guidance",
               "text": "- What data sources am I sharing?\n  - Both FIP and the account within the FIP for which consent is being requested should be clearly called out.\n  - FI Type should be called out clearly indicating in the form of: bank account data, Mutual Fund Data, Insurance Information, etc.\n- What information am I sharing for each data source?\n  - Both account-specific information (balance, transactions, etc.) and user-specific information (PAN, DoB) must be called out either at the consent stage or at the linking stage (if the intention to link is considered as implied consent).\n  - Any applied data filters should be called out.\n- Who am I sharing my information with?\n  - List of entities that will have access to this data must be called out on the screen where user consent is being collected.\n- How long am I sharing my information for?\n  - Duration for which said entity or entities can access the user\u2019s data (consent life).\n  - Duration for which said entity or entities will be able to store the user\u2019s data (data life).\n- Why am I sharing this data?\n  - Clear callout of the purpose behind granting access to this information. Needs to be meaningful to the user. For example - \u201cPersonal finance m",
-              "score": 0.408,
+              "score": 0.461,
               "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Underlying Principles: > Transparent, without cognitive overload: (retrieved 2026-08-20)"
             },
             {
-              "clause_id": "para 7 (no clause numbering found)",
-              "document": "DEPA \u2014 Consent Artefact",
-              "authority": "specification",
-              "text": "expiry-time \n The expiry time of the consent artifact. I:e after this it should be considered invalid.",
-              "score": 0.375,
-              "citation": "DEPA \u2014 Consent Artefact, para 7 (no clause numbering found) (retrieved 2026-08-20)"
-            },
-            {
-              "clause_id": "Design Principles for Informed Consent > FIP Selection Screen:",
-              "document": "Sahamati \u2014 Design Principles for Informed Consent",
-              "authority": "sro-guidance",
-              "text": "- FI Category\n- Info Requested + Data filters\n- FI Date Range\n- Account and FIP details",
-              "score": 0.346,
-              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > FIP Selection Screen: (retrieved 2026-08-20)"
-            },
-            {
-              "clause_id": "Design Principles for Informed Consent > Behind other elements(L2) (help, etc.)",
-              "document": "Sahamati \u2014 Design Principles for Informed Consent",
-              "authority": "sro-guidance",
-              "text": "- FI Category\n- FIP Date Range\n- FIP and Account Details\n- Details on how to cancel (possibly under help?)",
-              "score": 0.332,
-              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Behind other elements(L2) (help, etc.) (retrieved 2026-08-20)"
-            },
-            {
-              "clause_id": "cl. 11.2",
+              "clause_id": "cl. 7.6",
               "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
               "authority": "regulation",
-              "text": "11.2 Customer complaints shall be handled/ disposed of by the Account Aggregator within such time and in such manner as provided for in its Board approved policy, but in any case not beyond a period of one month from its receipt.",
-              "score": 0.295,
-              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 11.2 (retrieved 2026-08-20)"
+              "text": "7.6 Use of information by Account Aggregator and Financial Information user",
+              "score": 0.445,
+              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.6 (retrieved 2026-08-20)"
+            },
+            {
+              "clause_id": "cl. 6.1",
+              "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+              "authority": "regulation",
+              "text": "6.1 No financial information of the customer shall be retrieved, shared or transferred by the Account Aggregator without the explicit consent of the customer.",
+              "score": 0.429,
+              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.1 (retrieved 2026-08-20)"
             }
           ]
         }
@@ -341,73 +336,23 @@
         "step": "tool",
         "tool": "check_gap_register",
         "input": {
-          "topic": "FIU deletion of data after consent revoked or dataLife expired"
+          "topic": "deletion of data already collected by FIU after consent is revoked"
         },
         "output": {
           "found": false
         }
       },
       {
-        "step": "tool",
-        "tool": "retrieve_clauses",
-        "input": {
-          "query": "FIU data retention storage consent revoked data life expired must delete"
-        },
-        "output": {
-          "clauses": [
-            {
-              "clause_id": "para 7 (no clause numbering found)",
-              "document": "DEPA \u2014 Consent Artefact",
-              "authority": "specification",
-              "text": "expiry-time \n The expiry time of the consent artifact. I:e after this it should be considered invalid.",
-              "score": 0.464,
-              "citation": "DEPA \u2014 Consent Artefact, para 7 (no clause numbering found) (retrieved 2026-08-20)"
-            },
-            {
-              "clause_id": "Design Principles for Informed Consent > Underlying Principles: > Transparent, without cognitive overload:",
-              "document": "Sahamati \u2014 Design Principles for Informed Consent",
-              "authority": "sro-guidance",
-              "text": "- What data sources am I sharing?\n  - Both FIP and the account within the FIP for which consent is being requested should be clearly called out.\n  - FI Type should be called out clearly indicating in the form of: bank account data, Mutual Fund Data, Insurance Information, etc.\n- What information am I sharing for each data source?\n  - Both account-specific information (balance, transactions, etc.) and user-specific information (PAN, DoB) must be called out either at the consent stage or at the linking stage (if the intention to link is considered as implied consent).\n  - Any applied data filters should be called out.\n- Who am I sharing my information with?\n  - List of entities that will have access to this data must be called out on the screen where user consent is being collected.\n- How long am I sharing my information for?\n  - Duration for which said entity or entities can access the user\u2019s data (consent life).\n  - Duration for which said entity or entities will be able to store the user\u2019s data (data life).\n- Why am I sharing this data?\n  - Clear callout of the purpose behind granting access to this information. Needs to be meaningful to the user. For example - \u201cPersonal finance m",
-              "score": 0.419,
-              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Underlying Principles: > Transparent, without cognitive overload: (retrieved 2026-08-20)"
-            },
-            {
-              "clause_id": "Design Principles for Informed Consent > FIP Selection Screen:",
-              "document": "Sahamati \u2014 Design Principles for Informed Consent",
-              "authority": "sro-guidance",
-              "text": "- FI Category\n- Info Requested + Data filters\n- FI Date Range\n- Account and FIP details",
-              "score": 0.392,
-              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > FIP Selection Screen: (retrieved 2026-08-20)"
-            },
-            {
-              "clause_id": "cl. 7.2",
-              "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
-              "authority": "regulation",
-              "text": "7.2 Upon being presented the consent artefact, the Financial Information provider shall verify:\n\n (a) validity of consent\n\n (b) specified dates and usage; and\n\n (c) the credentials of the Account Aggregator\n\n through appropriate means.",
-              "score": 0.386,
-              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.2 (retrieved 2026-08-20)"
-            },
-            {
-              "clause_id": "Design Principles for Informed Consent > Behind other elements(L2) (help, etc.)",
-              "document": "Sahamati \u2014 Design Principles for Informed Consent",
-              "authority": "sro-guidance",
-              "text": "- FI Category\n- FIP Date Range\n- FIP and Account Details\n- Details on how to cancel (possibly under help?)",
-              "score": 0.383,
-              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Behind other elements(L2) (help, etc.) (retrieved 2026-08-20)"
-            }
-          ]
-        }
+        "step": "guard.audit",
+        "passed": true,
+        "unsupported": [],
+        "unverified_citations": [],
+        "precedent_backed": []
       },
       {
-        "step": "abstain",
-        "reason": "SPEC_EXCLUDES",
-        "audit_passed": false,
-        "unsupported": [
-          "The RBI Master Direction requires the Account Aggregator to let you revoke consent at any time, which stops future data fetches.",
-          "However, the corpus does not specify whether the financial information user (the app or lender that received your data) must delete what they already collected before revocation."
-        ],
-        "assurance_passed": true,
-        "assurance_phrases": []
+        "step": "guard.assurance",
+        "passed": true,
+        "phrases": []
       }
     ]
   },
@@ -436,7 +381,7 @@
     "question": "What about the account I hold jointly with my husband?",
     "proves": "Framework-gap register \u2014 and the distinction between 'the spec excludes it' and 'nobody implemented it', which this build does not yet resolve.",
     "outcome": "ABSTAINED",
-    "text": "Joint accounts can't currently be linked or shared through Account Aggregator \u2014 no bank supports it in practice. Whether the rules exclude joint accounts or banks simply haven't built the feature, I can't tell from these documents.",
+    "text": "Joint accounts can't currently be linked or shared through Account Aggregator \u2014 as far as I can tell, no bank supports it. I can see it doesn't work in practice, but whether the rules exclude joint accounts or banks simply haven't built it, I can't tell you from these documents. (Note: part of this is general reasoning about what this type of document or artefact contains \u2014 e.g. whether it carries login credentials \u2014 not a citation to a specific regulatory clause.)",
     "citations": [],
     "trace": [
       {
@@ -455,49 +400,49 @@
         "step": "tool",
         "tool": "retrieve_clauses",
         "input": {
-          "query": "joint account holder consent sharing data"
+          "query": "joint account holder consent Account Aggregator"
         },
         "output": {
           "clauses": [
             {
-              "clause_id": "Design Principles for Informed Consent > Underlying Principles: > Transparent, without cognitive overload:",
-              "document": "Sahamati \u2014 Design Principles for Informed Consent",
-              "authority": "sro-guidance",
-              "text": "- What data sources am I sharing?\n  - Both FIP and the account within the FIP for which consent is being requested should be clearly called out.\n  - FI Type should be called out clearly indicating in the form of: bank account data, Mutual Fund Data, Insurance Information, etc.\n- What information am I sharing for each data source?\n  - Both account-specific information (balance, transactions, etc.) and user-specific information (PAN, DoB) must be called out either at the consent stage or at the linking stage (if the intention to link is considered as implied consent).\n  - Any applied data filters should be called out.\n- Who am I sharing my information with?\n  - List of entities that will have access to this data must be called out on the screen where user consent is being collected.\n- How long am I sharing my information for?\n  - Duration for which said entity or entities can access the user\u2019s data (consent life).\n  - Duration for which said entity or entities will be able to store the user\u2019s data (data life).\n- Why am I sharing this data?\n  - Clear callout of the purpose behind granting access to this information. Needs to be meaningful to the user. For example - \u201cPersonal finance m",
-              "score": 0.677,
-              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Underlying Principles: > Transparent, without cognitive overload: (retrieved 2026-08-20)"
-            },
-            {
-              "clause_id": "cl. 7",
+              "clause_id": "cl. 6.6",
               "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
               "authority": "regulation",
-              "text": "7. Sharing of financial information by Financial Information providers upon valid consent artefact being presented",
-              "score": 0.629,
-              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7 (retrieved 2026-08-20)"
-            },
-            {
-              "clause_id": "cl. 7.2",
-              "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
-              "authority": "regulation",
-              "text": "7.2 Upon being presented the consent artefact, the Financial Information provider shall verify:\n\n (a) validity of consent\n\n (b) specified dates and usage; and\n\n (c) the credentials of the Account Aggregator\n\n through appropriate means.",
-              "score": 0.612,
-              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.2 (retrieved 2026-08-20)"
-            },
-            {
-              "clause_id": "cl. 7.1",
-              "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
-              "authority": "regulation",
-              "text": "7.1 Financial Information providers shall share financial information of a customer with an Account Aggregator on being presented a valid consent artefact by an Account Aggregator in accordance with Clause 6.",
-              "score": 0.61,
-              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.1 (retrieved 2026-08-20)"
+              "text": "6.6 An Account Aggregator shall also provide its customers a functionality to revoke consent to obtain information that is rendered accessible by a consent artefact, including the ability to revoke consent to obtain parts of such information. Upon revocation, a fresh consent artefact shall be shared with the Financial Information provider.",
+              "score": 0.688,
+              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.6 (retrieved 2026-08-20)"
             },
             {
               "clause_id": "cl. 6.3",
               "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
               "authority": "regulation",
               "text": "6.3 The consent of the customer obtained by the Account Aggregator shall be a standardised consent artefact which shall contain the following details, namely:\u2014\n\n identity of the customer and optional contact information;\n\n \n\n the nature of the financial information requested;\n\n \n\n purpose of collecting such information;\n\n \n\n the identity of the recipients of the information, if any;\n\n \n\n URL or other address to which notification needs to be sent every time the consent artefact is used to access information\n\n \n\n Consent creation date, expiry date, identity and signature/ digital signature of the Account Aggregator; and\n\n \n\n any other attribute as may be prescribed by the Bank.",
-              "score": 0.609,
+              "score": 0.681,
               "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.3 (retrieved 2026-08-20)"
+            },
+            {
+              "clause_id": "cl. 6.5",
+              "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+              "authority": "regulation",
+              "text": "6.5 At the time of obtaining consent, the Account Aggregator shall inform the customer of all necessary attributes to be contained in the consent artefact as per paragraph 6.3 above and the right of the customer to file complaints with relevant authorities in case of non-redressal of grievances.",
+              "score": 0.679,
+              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.5 (retrieved 2026-08-20)"
+            },
+            {
+              "clause_id": "cl. 6.2",
+              "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+              "authority": "regulation",
+              "text": "6.2 An Account Aggregator shall perform the function of obtaining, submitting and managing the customer\u2019s consent in accordance with these directions.",
+              "score": 0.679,
+              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.2 (retrieved 2026-08-20)"
+            },
+            {
+              "clause_id": "cl. 10",
+              "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+              "authority": "regulation",
+              "text": "10. Rights of the customer\n\n a) An Account Aggregator shall enable the customer to access a record of the consents provided by him and the Financial Information users with whom the information has been shared.\n\n b) An Account Aggregator shall not use or access any customer information other than for performing the business of account aggregator explicitly requested by the customer.",
+              "score": 0.644,
+              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 10 (retrieved 2026-08-20)"
             }
           ]
         }
@@ -506,49 +451,49 @@
         "step": "tool",
         "tool": "retrieve_clauses",
         "input": {
-          "query": "joint account multiple holders co-owner second holder"
+          "query": "joint account both holders consent required AA FIP"
         },
         "output": {
           "clauses": [
             {
-              "clause_id": "If an investor is having multiple demat accounts across the depositories which depository will send the CAS to investor?",
-              "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
-              "authority": "public-awareness",
-              "text": "If an investor is having multiple demat accounts across the depositories which depository will send the CAS to investor? In case investors have multiple demat accounts across the two depositories, the depository having the demat account which has been opened earlier shall be the default depository which will consolidate details across depositories and MF investments and dispatch the CAS to the investor.",
-              "score": 0.534,
-              "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, If an investor is having multiple demat accounts across the depositories which depository will send the CAS to investor? (retrieved 2026-08-20)"
-            },
-            {
-              "clause_id": "What is the basis for consolidation for CAS?",
-              "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
-              "authority": "public-awareness",
-              "text": "What is the basis for consolidation for CAS? As per SEBI guidelines the consolidation of account statement is done on the basis of Permanent Account Number (PAN) . In case of multiple holding, it is based on PAN of the first holder and pattern of holding. Based on the PANs provided by the AMCs/MF-RTAs, the Depositories match the PANs available in the demat account of the clients to determine the common PANs and allocate the PANs among themselves for the purpose of sending CAS. For PANs which are common between Depositories and AMCs, the Depositories send the CAS. In other cases (i.e PANs with no demat account and only MF units holding), the AMCs/MF-RTAs shall continue to send the CAS.",
-              "score": 0.478,
-              "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, What is the basis for consolidation for CAS? (retrieved 2026-08-20)"
-            },
-            {
-              "clause_id": "cl. 7.7",
+              "clause_id": "cl. 7.2",
               "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
               "authority": "regulation",
-              "text": "7.7 Joining the Account Aggregator Ecosystem as Financial Information User 9 \n\n With a view to ensure efficient and optimum utilisation of the Account Aggregator ecosystem, regulated entities of the Reserve Bank joining the Account Aggregator ecosystem as Financial Information User shall necessarily join as Financial Information Provider also, if they hold the specified financial information and fall under the definition of Financial Information Provider.",
-              "score": 0.431,
-              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.7 (retrieved 2026-08-20)"
+              "text": "7.2 Upon being presented the consent artefact, the Financial Information provider shall verify:\n\n (a) validity of consent\n\n (b) specified dates and usage; and\n\n (c) the credentials of the Account Aggregator\n\n through appropriate means.",
+              "score": 0.51,
+              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.2 (retrieved 2026-08-20)"
+            },
+            {
+              "clause_id": "Design Principles for Informed Consent > Underlying Principles: > Transparent, without cognitive overload:",
+              "document": "Sahamati \u2014 Design Principles for Informed Consent",
+              "authority": "sro-guidance",
+              "text": "- What data sources am I sharing?\n  - Both FIP and the account within the FIP for which consent is being requested should be clearly called out.\n  - FI Type should be called out clearly indicating in the form of: bank account data, Mutual Fund Data, Insurance Information, etc.\n- What information am I sharing for each data source?\n  - Both account-specific information (balance, transactions, etc.) and user-specific information (PAN, DoB) must be called out either at the consent stage or at the linking stage (if the intention to link is considered as implied consent).\n  - Any applied data filters should be called out.\n- Who am I sharing my information with?\n  - List of entities that will have access to this data must be called out on the screen where user consent is being collected.\n- How long am I sharing my information for?\n  - Duration for which said entity or entities can access the user\u2019s data (consent life).\n  - Duration for which said entity or entities will be able to store the user\u2019s data (data life).\n- Why am I sharing this data?\n  - Clear callout of the purpose behind granting access to this information. Needs to be meaningful to the user. For example - \u201cPersonal finance m",
+              "score": 0.507,
+              "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Underlying Principles: > Transparent, without cognitive overload: (retrieved 2026-08-20)"
             },
             {
               "clause_id": "cl. 15",
               "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
               "authority": "regulation",
               "text": "15. Requirement to obtain prior approval of the Bank for acquisition or transfer of control of Account Aggregators \u2013",
-              "score": 0.423,
+              "score": 0.484,
               "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 15 (retrieved 2026-08-20)"
             },
             {
-              "clause_id": "cl. 5",
+              "clause_id": "cl. 6.5",
               "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
               "authority": "regulation",
-              "text": "5. Duties and Responsibilities of an Account Aggregator\n\n Account Aggregator shall provide services to a customer based on the customer\u2019s explicit consent.\n\n \n\n Account Aggregator shall ensure that the providing of services to a customer. shall be backed by appropriate agreements/ authorisations between the Account Aggregator, the customer and the Financial information providers.\n\n \n\n Account Aggregator shall not support transactions by customers.\n\n \n\n Account Aggregator shall ensure appropriate mechanisms for proper customer identification.\n\n \n\n Account Aggregator shall share information as referred to under paragraph 3(iv) only with the customer to whom it relates or any other financial information user as authorized by the customer in accordance with the terms of the consent provided by the customer.\n\n \n\n Account Aggregator shall not undertake any other business other than the business of account aggregator. Deployment of investible surplus by an Account Aggregator in instruments, not for trading, shall however be permitted.\n\n \n\n No financial information of the customer accessed by the Account Aggregator from the financial information providers shall reside with the Account Aggr",
-              "score": 0.422,
-              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 5 (retrieved 2026-08-20)"
+              "text": "6.5 At the time of obtaining consent, the Account Aggregator shall inform the customer of all necessary attributes to be contained in the consent artefact as per paragraph 6.3 above and the right of the customer to file complaints with relevant authorities in case of non-redressal of grievances.",
+              "score": 0.48,
+              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.5 (retrieved 2026-08-20)"
+            },
+            {
+              "clause_id": "cl. 6.3",
+              "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+              "authority": "regulation",
+              "text": "6.3 The consent of the customer obtained by the Account Aggregator shall be a standardised consent artefact which shall contain the following details, namely:\u2014\n\n identity of the customer and optional contact information;\n\n \n\n the nature of the financial information requested;\n\n \n\n purpose of collecting such information;\n\n \n\n the identity of the recipients of the information, if any;\n\n \n\n URL or other address to which notification needs to be sent every time the consent artefact is used to access information\n\n \n\n Consent creation date, expiry date, identity and signature/ digital signature of the Account Aggregator; and\n\n \n\n any other attribute as may be prescribed by the Bank.",
+              "score": 0.473,
+              "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.3 (retrieved 2026-08-20)"
             }
           ]
         }
@@ -557,7 +502,7 @@
         "step": "tool",
         "tool": "check_gap_register",
         "input": {
-          "topic": "joint account consent requirements both holders"
+          "topic": "joint account multiple holders consent requirement"
         },
         "output": {
           "found": true,
@@ -573,6 +518,10 @@
         "reason": "UNRESOLVED",
         "audit_passed": true,
         "unsupported": [],
+        "precedent_backed": [
+          "Joint accounts can't currently be linked or shared through Account Aggregator \u2014 as far as I can tell, no bank supports it.",
+          "I can see it doesn't work in practice, but whether the rules exclude joint accounts or banks simply haven't built it, I can't tell you from these documents."
+        ],
         "assurance_passed": true,
         "assurance_phrases": []
       }
@@ -613,7 +562,7 @@
         "step": "tool",
         "tool": "check_exposure_register",
         "input": {
-          "artefact": "eCAS (consolidated account statement)"
+          "artefact": "eCAS mutual fund statement"
         },
         "output": {
           "found": true,
@@ -632,7 +581,8 @@
         "unsupported": [],
         "unverified_citations": [
           "Author's assessment from domain knowledge. An eCAS is a reporting document issued by an RTA or depository; it contains no authentication material."
-        ]
+        ],
+        "precedent_backed": []
       }
     ]
   },

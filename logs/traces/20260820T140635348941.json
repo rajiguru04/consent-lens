@@ -1,0 +1,111 @@
+{
+  "question": "I uploaded my Account Statement through email to a portfolio Advisory websitek. Will my bank account be subject to fraud.",
+  "outcome": "ABSTAINED",
+  "text": "I can't answer that from these documents. (ROUTE_NOT_GOVERNED)",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "identify_route",
+      "input": {
+        "description": "uploaded Account Statement through email to a portfolio Advisory website"
+      },
+      "output": {
+        "route": "UNKNOWN",
+        "governed": false,
+        "note": "Route not identified from the description. Which route was used determines which protections apply \u2014 worth establishing first."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "check_exposure_register",
+      "input": {
+        "artefact": "Account Statement PDF uploaded via email"
+      },
+      "output": {
+        "found": true,
+        "artefact": "bank statement PDF",
+        "carries_credentials": false,
+        "does_not_enable": "A debit by itself. Moving money out requires authentication the statement does not contain.",
+        "does_enable": "Salary, balance, EMI and spending profiling, and the account number \u2014 enough to make a targeted approach credible.",
+        "evidence": "Author's assessment from domain knowledge.",
+        "verified": false,
+        "reminder": "State capability only. Never assert the user is safe."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "statement PDF upload email consent framework protection ungoverned route"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "para 1 (no clause numbering found)",
+            "document": "DEPA \u2014 Consent Artefact",
+            "authority": "specification",
+            "text": "In our framework, consent is always electronically sought from the user and is captured using a document called the Consent Artefact .",
+            "score": 0.512,
+            "citation": "DEPA \u2014 Consent Artefact, para 1 (no clause numbering found) (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 6.7",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "6.7 An electronic consent artefact shall be capable of being logged, audited and verified.",
+            "score": 0.501,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.7 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 6.4",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "6.4 The consent artefact can also be obtained in electronic form.",
+            "score": 0.47,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.4 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "para 3 (no clause numbering found)",
+            "document": "DEPA \u2014 Consent Artefact",
+            "authority": "specification",
+            "text": "Headers : Provide information on how the body of the consent artefact should be parsed",
+            "score": 0.438,
+            "citation": "DEPA \u2014 Consent Artefact, para 3 (no clause numbering found) (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.2",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.2 Upon being presented the consent artefact, the Financial Information provider shall verify:\n\n (a) validity of consent\n\n (b) specified dates and usage; and\n\n (c) the credentials of the Account Aggregator\n\n through appropriate means.",
+            "score": 0.429,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.2 (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "abstain",
+      "reason": "ROUTE_NOT_GOVERNED",
+      "audit_passed": false,
+      "unsupported": [
+        "Uploading a statement PDF via email does not go through the Account Aggregator framework and is not governed by a consent artefact.",
+        "The corpus covers electronic consent artefacts used in AA flows, not direct uploads or email sharing of documents."
+      ],
+      "assurance_passed": true,
+      "assurance_phrases": []
+    }
+  ]
+}

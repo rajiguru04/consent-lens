@@ -1,0 +1,112 @@
+{
+  "question": "I uploaded my ICICI bank statement for home loan processing with another bank. Will my bank account be subject to fraud.",
+  "outcome": "ABSTAINED",
+  "text": "I can't answer that from these documents. (ROUTE_NOT_GOVERNED)",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "identify_route",
+      "input": {
+        "description": "uploaded my ICICI bank statement for home loan processing with another bank"
+      },
+      "output": {
+        "route": "UNKNOWN",
+        "governed": false,
+        "note": "Route not identified from the description. Which route was used determines which protections apply \u2014 worth establishing first."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "check_exposure_register",
+      "input": {
+        "artefact": "bank statement PDF upload"
+      },
+      "output": {
+        "found": true,
+        "artefact": "bank statement PDF",
+        "carries_credentials": false,
+        "does_not_enable": "A debit by itself. Moving money out requires authentication the statement does not contain.",
+        "does_enable": "Salary, balance, EMI and spending profiling, and the account number \u2014 enough to make a targeted approach credible.",
+        "evidence": "Author's assessment from domain knowledge.",
+        "verified": false,
+        "reminder": "State capability only. Never assert the user is safe."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "PDF upload bank statement consent framework protections governed"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "cl. 7",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7. Sharing of financial information by Financial Information providers upon valid consent artefact being presented",
+            "score": 0.604,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.2",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.2 Upon being presented the consent artefact, the Financial Information provider shall verify:\n\n (a) validity of consent\n\n (b) specified dates and usage; and\n\n (c) the credentials of the Account Aggregator\n\n through appropriate means.",
+            "score": 0.591,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.2 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.5",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.5 To enable these data flows, the Financial Information providers shall:\n\n implement interfaces that will allow an Account Aggregator to submit consent artefacts, and authenticate each other, and would enable secure flow of financial information to the Account Aggregator;\n\n \n\n adopt means to verify the consent including digital signatures, if any, contained in the consent artefact;\n\n \n\n implement means to digitally sign the financial information that is shared by them about the customers;\n\n \n\n maintain a log of all information sharing requests and the actions performed by them pursuant to such requests, and submit the same to the Account Aggregator.",
+            "score": 0.586,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.5 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 6.3",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "6.3 The consent of the customer obtained by the Account Aggregator shall be a standardised consent artefact which shall contain the following details, namely:\u2014\n\n identity of the customer and optional contact information;\n\n \n\n the nature of the financial information requested;\n\n \n\n purpose of collecting such information;\n\n \n\n the identity of the recipients of the information, if any;\n\n \n\n URL or other address to which notification needs to be sent every time the consent artefact is used to access information\n\n \n\n Consent creation date, expiry date, identity and signature/ digital signature of the Account Aggregator; and\n\n \n\n any other attribute as may be prescribed by the Bank.",
+            "score": 0.572,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.3 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.6.1",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.6.1 Where financial information has been provided by a Financial Information provider to an Account Aggregator for transferring to a Financial Information user with the customer's explicit consent, the Account Aggregator shall:\n\n verify the identity of the Financial Information user; and, if verified,\n\n \n\n securely transfer the customer\u2019s information to the intended recipient in accordance with the terms of the consent artefact.",
+            "score": 0.564,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.6.1 (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "abstain",
+      "reason": "ROUTE_NOT_GOVERNED",
+      "audit_passed": false,
+      "unsupported": [
+        "A PDF statement uploaded directly to a lender is not governed by the Account Aggregator consent framework; the Master Direction only applies when sharing happens through an AA with a consent artefact.",
+        "I can tell you that a statement by itself carries no password or OTP, so it does not by itself enable a debit\u2014but I cannot tell you whether your account is at risk, because that depends on what else may have been shared and what the lender's controls are."
+      ],
+      "precedent_backed": [],
+      "assurance_passed": true,
+      "assurance_phrases": []
+    }
+  ]
+}
