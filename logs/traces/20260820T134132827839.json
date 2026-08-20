@@ -1,0 +1,20 @@
+{
+  "question": "Was that a bad idea? Is that advisory service trustworthy?",
+  "outcome": "REFUSED",
+  "text": "I can't tell you whether to approve or refuse. I only explain what the consent documents say \u2014 the decision is yours.",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ADVICE",
+      "matched": "Was that a bad idea",
+      "refused": true
+    }
+  ]
+}

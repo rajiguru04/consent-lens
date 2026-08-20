@@ -1,0 +1,133 @@
+{
+  "question": "What about the account I hold jointly with my husband?",
+  "outcome": "ABSTAINED",
+  "text": "I can't answer that from these documents. (NOT_IN_CORPUS)",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "joint account jointly held account"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "If an investor is having multiple demat accounts across the depositories which depository will send the CAS to investor?",
+            "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+            "authority": "public-awareness",
+            "text": "If an investor is having multiple demat accounts across the depositories which depository will send the CAS to investor? In case investors have multiple demat accounts across the two depositories, the depository having the demat account which has been opened earlier shall be the default depository which will consolidate details across depositories and MF investments and dispatch the CAS to the investor.",
+            "score": 0.51,
+            "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, If an investor is having multiple demat accounts across the depositories which depository will send the CAS to investor? (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "What is the basis for consolidation for CAS?",
+            "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+            "authority": "public-awareness",
+            "text": "What is the basis for consolidation for CAS? As per SEBI guidelines the consolidation of account statement is done on the basis of Permanent Account Number (PAN) . In case of multiple holding, it is based on PAN of the first holder and pattern of holding. Based on the PANs provided by the AMCs/MF-RTAs, the Depositories match the PANs available in the demat account of the clients to determine the common PANs and allocate the PANs among themselves for the purpose of sending CAS. For PANs which are common between Depositories and AMCs, the Depositories send the CAS. In other cases (i.e PANs with no demat account and only MF units holding), the AMCs/MF-RTAs shall continue to send the CAS.",
+            "score": 0.464,
+            "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, What is the basis for consolidation for CAS? (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 15",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "15. Requirement to obtain prior approval of the Bank for acquisition or transfer of control of Account Aggregators \u2013",
+            "score": 0.445,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 15 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 4.2.3",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "4.2.3 The Bank may, after being satisfied that the conditions specified under paragraph 4.2.2 are fulfilled, grant in-principle approval for registering as an Account Aggregator subject to such conditions as it may consider fit to impose.",
+            "score": 0.438,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 4.2.3 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 5",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "5. Duties and Responsibilities of an Account Aggregator\n\n Account Aggregator shall provide services to a customer based on the customer\u2019s explicit consent.\n\n \n\n Account Aggregator shall ensure that the providing of services to a customer. shall be backed by appropriate agreements/ authorisations between the Account Aggregator, the customer and the Financial information providers.\n\n \n\n Account Aggregator shall not support transactions by customers.\n\n \n\n Account Aggregator shall ensure appropriate mechanisms for proper customer identification.\n\n \n\n Account Aggregator shall share information as referred to under paragraph 3(iv) only with the customer to whom it relates or any other financial information user as authorized by the customer in accordance with the terms of the consent provided by the customer.\n\n \n\n Account Aggregator shall not undertake any other business other than the business of account aggregator. Deployment of investible surplus by an Account Aggregator in instruments, not for trading, shall however be permitted.\n\n \n\n No financial information of the customer accessed by the Account Aggregator from the financial information providers shall reside with the Account Aggr",
+            "score": 0.425,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 5 (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "joint account holder multiple holders pattern of holding"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "What is the basis for consolidation for CAS?",
+            "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+            "authority": "public-awareness",
+            "text": "What is the basis for consolidation for CAS? As per SEBI guidelines the consolidation of account statement is done on the basis of Permanent Account Number (PAN) . In case of multiple holding, it is based on PAN of the first holder and pattern of holding. Based on the PANs provided by the AMCs/MF-RTAs, the Depositories match the PANs available in the demat account of the clients to determine the common PANs and allocate the PANs among themselves for the purpose of sending CAS. For PANs which are common between Depositories and AMCs, the Depositories send the CAS. In other cases (i.e PANs with no demat account and only MF units holding), the AMCs/MF-RTAs shall continue to send the CAS.",
+            "score": 0.541,
+            "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, What is the basis for consolidation for CAS? (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "If an investor is having multiple demat accounts across the depositories which depository will send the CAS to investor?",
+            "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+            "authority": "public-awareness",
+            "text": "If an investor is having multiple demat accounts across the depositories which depository will send the CAS to investor? In case investors have multiple demat accounts across the two depositories, the depository having the demat account which has been opened earlier shall be the default depository which will consolidate details across depositories and MF investments and dispatch the CAS to the investor.",
+            "score": 0.533,
+            "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, If an investor is having multiple demat accounts across the depositories which depository will send the CAS to investor? (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.7",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.7 Joining the Account Aggregator Ecosystem as Financial Information User 9 \n\n With a view to ensure efficient and optimum utilisation of the Account Aggregator ecosystem, regulated entities of the Reserve Bank joining the Account Aggregator ecosystem as Financial Information User shall necessarily join as Financial Information Provider also, if they hold the specified financial information and fall under the definition of Financial Information Provider.",
+            "score": 0.409,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.7 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 4.2.2",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "4.2.2 The Bank for the purpose of considering the application for registration shall require to be satisfied that the following conditions are fulfilled:-\n\n The company has the necessary resources and wherewithal to offer such services to customers.\n\n \n\n The company has the adequate capital structure to undertake the business of an account aggregator.\n\n \n\n The promoters of the company are fit and proper.\n\n \n\n The general character of the management or proposed management of the company are not prejudicial to the public interest.\n\n \n\n The company has a plan for a robust Information Technology system.\n\n \n\n The company shall not have a leverage ratio of more than seven.\n\n \n\n That the public interest shall be served by the grant of certificate of registration to the Account Aggregator to commence or to carry on the business in India.\n\n \n\n Any other condition that made be specified by the Bank from time to time, the fulfilment of which in the opinion of the Bank shall be necessary to ensure that the commencement of or carrying on the business in India shall not be prejudicial to the public interest.",
+            "score": 0.405,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 4.2.2 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.6",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.6 Use of information by Account Aggregator and Financial Information user",
+            "score": 0.401,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.6 (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "abstain",
+      "reason": "NOT_IN_CORPUS",
+      "audit_passed": false,
+      "unsupported": [
+        "Your question is too context-dependent for me to answer.",
+        "If you can describe what you did (for example, \"I approved an Account Aggregator consent\" or \"I forwarded my statement by email\"), I can explain what that document allows."
+      ],
+      "assurance_passed": true,
+      "assurance_phrases": []
+    }
+  ]
+}

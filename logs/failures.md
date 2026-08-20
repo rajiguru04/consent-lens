@@ -162,6 +162,17 @@ reliability issue as entries 4/6 (the model doesn't consistently reach for the t
 told to) — worth returning to if Q1 needs to fully succeed, but out of scope for "add this
 source," which is now done and verified.
 
+**Second addendum, `demo/run_demo.py` full-suite run.** A closely related question — *"I
+shared my mutual fund holding statement by eCAS. Can someone withdraw money from that
+account?"* — hit `AUDIT_FAILED` for the same reason: the model cited
+`check_exposure_register`'s free-text `evidence` field ("Author's assessment from domain
+knowledge...") instead of a real `retrieve_clauses` result, even though it had correctly
+retrieved three real CDSL FAQ clauses earlier in the same turn. Confirms this is a live,
+recurring behavior, not a one-off — still open, still the same fix needed (tighten what the
+model is allowed to treat as a citable source). Publishing this outcome as-is on the demo
+page rather than re-rolling for a cleaner result: `AUDIT_FAILED` is the guard correctly
+blocking an ungrounded claim, which is the mechanism the whole product exists to demonstrate.
+
 ---
 
 ### 5 — `abstain()` bypasses both guards entirely
@@ -328,6 +339,36 @@ correctly resolved to the better-titled file, not whichever sorted first. Live r
 confirms the new content is actually reachable: *"someone called saying I am under digital
 arrest"* retrieves `rbi-kehta-hai-digital-arrest, full page` at 0.713 similarity — the highest
 score of any query run this session.
+
+---
+
+### 10 — the citation-membership fix (entry 3) had its own boundary bug
+**Asked:** *"I shared my mutual fund holding statement by eCAS. Can someone withdraw money
+from that account?"* — one of the 7 questions in `demo/run_demo.py`, first live run after
+adding the CDSL CAS FAQ source and pushing to GitHub.
+**Answered:** `AUDIT_FAILED`, despite the model correctly calling `retrieve_clauses` three
+times and citing real, retrieved CDSL FAQ chunks verbatim. `_cites_clause()` — entry 3's own
+membership check — rejected every one of them as `unverified_citations`.
+**Wrong because:** `_cites_clause()` used `\bcore\b` to bound the match, which works for
+numeric clause codes ("6.4") but breaks for `chunk_faq()`'s clause_ids, which are the
+question text itself and often end in punctuation ("...(CAS)?"). `\b` requires a transition
+between a word and non-word character; "?" and the space following it in a real citation are
+both non-word, so no boundary ever fires there — `\b...\b` failed to match even a
+byte-for-byte, character-for-character substring. Confirmed directly: `clause_id in citation`
+→ `True`; `_cites_clause(citation, clause_id)` → `False`. Entry 3's fix had never been tested
+against a non-numeric clause_id, because no such source existed until this session's CDSL
+integration created one.
+**Class:** `generation` — a real citation was rejected as fabricated, the inverse failure
+direction from entry 3 itself (which was invented citations passing). Both are the same
+underlying lesson: a guard that only gets tested against the shapes of input that existed
+when it was written will have gaps at the shapes that didn't.
+**Fixed?** yes. Replaced `\b...\b` with `(?<!\w)...(?!\w)` — lookarounds that only care
+whether the match is flanked by a *word* character (the actual collision risk this boundary
+exists to catch, per entry 3's 16.4-vs-6.4 case), not whether it's flanked by any non-word
+character at all. Verified against all 5 cases together, including the original entry-3
+regression set: real clause paraphrased (accept), real clause exact-format (accept), the
+16.4-vs-6.4 collision (still correctly rejected), and this entry's FAQ punctuation case
+(accept) — all 5 match expected outcomes, no regressions.
 
 ---
 

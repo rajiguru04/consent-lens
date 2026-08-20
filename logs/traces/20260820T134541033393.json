@@ -1,0 +1,57 @@
+{
+  "question": "I shared my mutual fund holding statement by eCAS. Can someone withdraw money from that account?",
+  "outcome": "AUDIT_FAILED",
+  "text": "I can't answer that without pointing you to the clause it comes from.",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "identify_route",
+      "input": {
+        "description": "shared mutual fund holding statement by eCAS"
+      },
+      "output": {
+        "route": "ECAS",
+        "governed": false,
+        "note": "Consolidated account statement shared by email or file. The statement's issuance is regulated, but forwarding it is not governed by any consent framework \u2014 no consent artefact, no purpose limitation, no expiry, no revocation, no audit trail."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "check_exposure_register",
+      "input": {
+        "artefact": "eCAS (consolidated account statement)"
+      },
+      "output": {
+        "found": true,
+        "artefact": "eCAS / consolidated account statement",
+        "carries_credentials": false,
+        "does_not_enable": "Redeeming, transferring or debiting the account. A redemption has to be authenticated with the fund house or platform, and the statement carries no credential and no authorisation.",
+        "does_enable": "Complete visibility of what you hold, where, and how much \u2014 which makes an approach from someone pretending to be your fund house or advisor far more convincing.",
+        "evidence": "Author's assessment from domain knowledge. An eCAS is a reporting document issued by an RTA or depository; it contains no authentication material.",
+        "verified": false,
+        "reminder": "State capability only. Never assert the user is safe."
+      }
+    },
+    {
+      "step": "guard.audit",
+      "passed": true,
+      "unsupported": [],
+      "unverified_citations": [
+        "Author's assessment from domain knowledge. An eCAS is a reporting document issued by an RTA or depository; it contains no authentication material."
+      ]
+    }
+  ]
+}

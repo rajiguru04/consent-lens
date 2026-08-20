@@ -43,14 +43,22 @@ def _cites_clause(citation_text: str, clause_id: str) -> bool:
 
     Matched on the clause number itself, not the full clause_id or the exact
     Chunk.citation() string, so the model can phrase a citation differently
-    ("clause 6.4" vs "cl. 6.4") without being falsely rejected. Word-boundary
+    ("clause 6.4" vs "cl. 6.4") without being falsely rejected. Boundary
     matched, not plain substring: a fabricated "cl. 16.4" must not false-pass
     against a real "cl. 6.4" just because "6.4" occurs inside "16.4".
+
+    Lookaround boundaries, not \\b — found live: a FAQ-shaped source (chunk_faq)
+    uses the question itself as clause_id, e.g. "...(CAS)?". \\b requires a
+    transition between a word and non-word character, and both "?" and the
+    space that follows it in a real citation are non-word, so \\b...\\b never
+    matched even a byte-for-byte substring. (?<!\\w)/(?!\\w) only care whether
+    the match is flanked by a WORD character (the actual collision risk, as in
+    "16.4" vs "6.4") — any non-word neighbour, including none at all, passes.
     """
     core = re.sub(r"^(cl\.|para)\s*", "", clause_id, flags=re.I).strip()
     if not core:
         return False
-    return bool(re.search(r"\b" + re.escape(core) + r"\b", citation_text))
+    return bool(re.search(r"(?<!\w)" + re.escape(core) + r"(?!\w)", citation_text))
 
 
 TRACES = pathlib.Path(__file__).resolve().parent.parent / "logs" / "traces"

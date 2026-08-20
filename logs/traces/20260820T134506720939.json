@@ -1,0 +1,104 @@
+{
+  "question": "My relationship manager said I'd get an OTP and should approve the next screen for my home loan. What did I approve?",
+  "outcome": "ABSTAINED",
+  "text": "I can't answer that from these documents. (NOT_IN_CORPUS)",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "identify_route",
+      "input": {
+        "description": "relationship manager said I'd get an OTP and should approve the next screen for my home loan"
+      },
+      "output": {
+        "route": "UNKNOWN",
+        "governed": false,
+        "note": "Route not identified from the description. Which route was used determines which protections apply \u2014 worth establishing first."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "check_gap_register",
+      "input": {
+        "topic": "OTP approval for home loan without knowing what screen showed"
+      },
+      "output": {
+        "found": false
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "OTP approval consent screen what user approves"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "Design Principles for Informed Consent > Consent Screen(L1):",
+            "document": "Sahamati \u2014 Design Principles for Informed Consent",
+            "authority": "sro-guidance",
+            "text": "- Purpose\n- Accounts Overview\n- Consent life\n- Data Life\n- Fetch type - one time or recurring\n- Frequency\n- Action to grant consent\n- Action to exit the flow\n- Trust markers\n- Callout for the ability to cancel consent",
+            "score": 0.577,
+            "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Consent Screen(L1): (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "Design Principles for Informed Consent > Underlying Principles: > Empowering, with meaningful control:",
+            "document": "Sahamati \u2014 Design Principles for Informed Consent",
+            "authority": "sro-guidance",
+            "text": "- Am I demonstrating a deliberate action?\n  - There should be a clear and explicit action to grant consent.\n  - There should be a pathway for the user to exit the flow without granting consent.\n- Do I feel I\u2019m in control of my data even after I\u2019ve possibly consented?\n  - Users should be told that they can cancel (revoke) anytime.\n  - Users should be told where they can manage their consent from.\n- Do I know that I\u2019ve actually given consent?\n  - There should be clear indications of success/failure. This includes aural cues (think transaction success sound on PhonePe, GPay, Paytm), SMS, and other notifications.\n  - Call out situations where the frequencies are uncommon, for example, if a PFM requests consent for 1000 times a day, that should be called out as unusually high.\n- Should not overwhelm the user.\n  - Is this too much information for me to process?\n  - Most important details should be present on the L1 screen.\n  - Other details can stay one level deep (under \u2018view details\u2019 or \u2018view more\u2019 or similar).",
+            "score": 0.568,
+            "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Underlying Principles: > Empowering, with meaningful control: (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 6.7",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "6.7 An electronic consent artefact shall be capable of being logged, audited and verified.",
+            "score": 0.54,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.7 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 6.4",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "6.4 The consent artefact can also be obtained in electronic form.",
+            "score": 0.522,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 6.4 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "Design Principles for Informed Consent > Underlying Principles: > Trustworthy, while creating digital and financial confidence:",
+            "document": "Sahamati \u2014 Design Principles for Informed Consent",
+            "authority": "sro-guidance",
+            "text": "- Do I feel that I can trust this screen?\n  - The screen should have certain trust markers.\n  - Clarify the ability to cancel consent before action for providing consent.\n  - Issue a data receipt to indicate that the data share was successful and as proof of data being shared with a particular entity.",
+            "score": 0.511,
+            "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Underlying Principles: > Trustworthy, while creating digital and financial confidence: (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "abstain",
+      "reason": "NOT_IN_CORPUS",
+      "audit_passed": false,
+      "unsupported": [
+        "You didn't describe which screen you saw or how data was being shared (Account Aggregator, PDF upload, or something else).",
+        "The Account Aggregator consent screen must show purpose, which accounts, and how often data will be fetched\u2014but I can't tell you what *your* screen said without knowing which route you used."
+      ],
+      "assurance_passed": true,
+      "assurance_phrases": []
+    }
+  ]
+}

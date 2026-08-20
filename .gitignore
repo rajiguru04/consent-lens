@@ -12,6 +12,7 @@ consent-lens-build-brief.md
 BUILD-PLAN.md
 
 .DS_Store
+~$*
 
 # Saved-webpage asset directories (images/css/js) from "Save Page As, Complete" —
 # the pipeline only reads the sibling .html file's text, never these. ~43MB of

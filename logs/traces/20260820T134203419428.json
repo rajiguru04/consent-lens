@@ -1,0 +1,211 @@
+{
+  "question": "I shared my mutual fund holding statement by eCAS. Can someone withdraw money from that account?",
+  "outcome": "AUDIT_FAILED",
+  "text": "I can't answer that without pointing you to the clause it comes from.",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "identify_route",
+      "input": {
+        "description": "shared mutual fund holding statement by eCAS"
+      },
+      "output": {
+        "route": "ECAS",
+        "governed": false,
+        "note": "Consolidated account statement shared by email or file. The statement's issuance is regulated, but forwarding it is not governed by any consent framework \u2014 no consent artefact, no purpose limitation, no expiry, no revocation, no audit trail."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "check_exposure_register",
+      "input": {
+        "artefact": "eCAS mutual fund holding statement"
+      },
+      "output": {
+        "found": true,
+        "artefact": "eCAS / consolidated account statement",
+        "carries_credentials": false,
+        "does_not_enable": "Redeeming, transferring or debiting the account. A redemption has to be authenticated with the fund house or platform, and the statement carries no credential and no authorisation.",
+        "does_enable": "Complete visibility of what you hold, where, and how much \u2014 which makes an approach from someone pretending to be your fund house or advisor far more convincing.",
+        "evidence": "Author's assessment from domain knowledge. An eCAS is a reporting document issued by an RTA or depository; it contains no authentication material.",
+        "verified": false,
+        "reminder": "State capability only. Never assert the user is safe."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "eCAS consolidated account statement contents credentials authentication"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "cl. 7.6.1",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.6.1 Where financial information has been provided by a Financial Information provider to an Account Aggregator for transferring to a Financial Information user with the customer's explicit consent, the Account Aggregator shall:\n\n verify the identity of the Financial Information user; and, if verified,\n\n \n\n securely transfer the customer\u2019s information to the intended recipient in accordance with the terms of the consent artefact.",
+            "score": 0.476,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.6.1 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.1",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.1 Financial Information providers shall share financial information of a customer with an Account Aggregator on being presented a valid consent artefact by an Account Aggregator in accordance with Clause 6.",
+            "score": 0.453,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.1 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.5",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.5 To enable these data flows, the Financial Information providers shall:\n\n implement interfaces that will allow an Account Aggregator to submit consent artefacts, and authenticate each other, and would enable secure flow of financial information to the Account Aggregator;\n\n \n\n adopt means to verify the consent including digital signatures, if any, contained in the consent artefact;\n\n \n\n implement means to digitally sign the financial information that is shared by them about the customers;\n\n \n\n maintain a log of all information sharing requests and the actions performed by them pursuant to such requests, and submit the same to the Account Aggregator.",
+            "score": 0.442,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.5 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "How can the investor open the password protected CDSL e-CAS?",
+            "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+            "authority": "public-awareness",
+            "text": "How can the investor open the password protected CDSL e-CAS? Investor will be required to enter PAN of the first/sole demat account holder in CAPITAL letters as a password to open the eCAS.",
+            "score": 0.439,
+            "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, How can the investor open the password protected CDSL e-CAS? (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.2",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.2 Upon being presented the consent artefact, the Financial Information provider shall verify:\n\n (a) validity of consent\n\n (b) specified dates and usage; and\n\n (c) the credentials of the Account Aggregator\n\n through appropriate means.",
+            "score": 0.434,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.2 (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "consolidated account statement CAS what information does it contain holdings transactions"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "What is CDSL Consolidated Account Statement (CAS)?",
+            "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+            "authority": "public-awareness",
+            "text": "What is CDSL Consolidated Account Statement (CAS)? CDSL CAS is a statement consisting of transactions and holdings in investor's demat account(s) held with CDSL and NSDL as well as in units of Mutual Funds held in Statement of Account (SOA) form. i.e The statement enables a consolidated view of all the investments of an investor across demat accounts and mutual fund units held with MF-RTA.",
+            "score": 0.764,
+            "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, What is CDSL Consolidated Account Statement (CAS)? (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "What is the basis for consolidation for CAS?",
+            "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+            "authority": "public-awareness",
+            "text": "What is the basis for consolidation for CAS? As per SEBI guidelines the consolidation of account statement is done on the basis of Permanent Account Number (PAN) . In case of multiple holding, it is based on PAN of the first holder and pattern of holding. Based on the PANs provided by the AMCs/MF-RTAs, the Depositories match the PANs available in the demat account of the clients to determine the common PANs and allocate the PANs among themselves for the purpose of sending CAS. For PANs which are common between Depositories and AMCs, the Depositories send the CAS. In other cases (i.e PANs with no demat account and only MF units holding), the AMCs/MF-RTAs shall continue to send the CAS.",
+            "score": 0.684,
+            "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, What is the basis for consolidation for CAS? (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "Why and when CAS was introduced?",
+            "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+            "authority": "public-awareness",
+            "text": "Why and when CAS was introduced? Pursuant to the Interim Budget announcement in 2014 to create one record for all financial assets of every individual, SEBI had extensive deliberations with the Depositories, AMFI and RTAs of Mutual Funds (MF-RTAs) to implement it with respect to financial assets of securities market. As a first step in this direction, SEBI has decided to enable a single consolidated view of all the investments of an investor in Mutual Funds (MF) and securities held in demat form with the Depositories. SEBI vide its circular no. CIR/MRD/DP/31/2014 dated November 12, 2014 mandated depositories to issue a Consolidated Account Statement (CAS) from the month of March 2015 with respect to the transactions carried out during the month of February 2015.",
+            "score": 0.609,
+            "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, Why and when CAS was introduced? (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "What type of transactions are included in CDSL CAS?",
+            "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+            "authority": "public-awareness",
+            "text": "What type of transactions are included in CDSL CAS? CDSL CAS will include all types of transactions executed by the BO in their demat account(s) across depositories & all financial transactions such as New Fund Offer, fresh purchase, additional purchase, redemption, switch in and out, dividend reinvestment, dividend accrued, systemic transaction such as SIP / SWP / STP, bonus, merger, etc. as provided by the MF-RTAs to CDSL in respect of Mutual Funds folios.",
+            "score": 0.564,
+            "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, What type of transactions are included in CDSL CAS? (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "If an investor is having multiple demat accounts across the depositories which depository will send the CAS to investor?",
+            "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+            "authority": "public-awareness",
+            "text": "If an investor is having multiple demat accounts across the depositories which depository will send the CAS to investor? In case investors have multiple demat accounts across the two depositories, the depository having the demat account which has been opened earlier shall be the default depository which will consolidate details across depositories and MF investments and dispatch the CAS to the investor.",
+            "score": 0.558,
+            "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, If an investor is having multiple demat accounts across the depositories which depository will send the CAS to investor? (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "CAS password authentication redeem withdraw debit transaction authorization credential"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "How can the investor open the password protected CDSL e-CAS?",
+            "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+            "authority": "public-awareness",
+            "text": "How can the investor open the password protected CDSL e-CAS? Investor will be required to enter PAN of the first/sole demat account holder in CAPITAL letters as a password to open the eCAS.",
+            "score": 0.509,
+            "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, How can the investor open the password protected CDSL e-CAS? (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "Can an investor request for change of default depository to receive the CAS?",
+            "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+            "authority": "public-awareness",
+            "text": "Can an investor request for change of default depository to receive the CAS? Yes, the investor can request for change of default depository to receive the CAS by informing the Depository Participant (DP) of the default depository from whom he is receiving the CAS.",
+            "score": 0.381,
+            "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, Can an investor request for change of default depository to receive the CAS? (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "What is CDSL Consolidated Account Statement (CAS)?",
+            "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+            "authority": "public-awareness",
+            "text": "What is CDSL Consolidated Account Statement (CAS)? CDSL CAS is a statement consisting of transactions and holdings in investor's demat account(s) held with CDSL and NSDL as well as in units of Mutual Funds held in Statement of Account (SOA) form. i.e The statement enables a consolidated view of all the investments of an investor across demat accounts and mutual fund units held with MF-RTA.",
+            "score": 0.378,
+            "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, What is CDSL Consolidated Account Statement (CAS)? (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "Can an investor opt out of the facility of receiving CAS?",
+            "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+            "authority": "public-awareness",
+            "text": "Can an investor opt out of the facility of receiving CAS? Yes. If an investor does not wish to receive CAS he should inform the same to any of his Depository Participant (DP) who will update the same in the depository system.",
+            "score": 0.375,
+            "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, Can an investor opt out of the facility of receiving CAS? (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "Can an investor receive CDSL CAS if MF units are held by the investor in demat form only?",
+            "document": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ",
+            "authority": "public-awareness",
+            "text": "Can an investor receive CDSL CAS if MF units are held by the investor in demat form only? No. If mutual fund units are only held in demat account with the depositories then CAS will not be generated and the transaction statement for the demat account will be sent by the respective Depository Participant (DP). CAS will be sent to those investors holding mutual fund units in SOA form with MF RTA and holding demat account(s).",
+            "score": 0.357,
+            "citation": "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, Can an investor receive CDSL CAS if MF units are held by the investor in demat form only? (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "guard.audit",
+      "passed": true,
+      "unsupported": [],
+      "unverified_citations": [
+        "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, What is CDSL Consolidated Account Statement (CAS)? (retrieved 2026-08-20)",
+        "CDSL \u2014 Consolidated Account Statement (CAS) FAQ, What type of transactions are included in CDSL CAS? (retrieved 2026-08-20)"
+      ]
+    }
+  ]
+}
