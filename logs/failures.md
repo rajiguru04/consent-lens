@@ -466,6 +466,97 @@ missed it) — all 6 correctly classified. Re-verified 3 adversarial/unrelated s
 (including one deliberately padded with extra words around unrelated uses of "statement")
 still correctly return `UNKNOWN` — the widened bound didn't loosen false-positive risk.
 
+---
+
+### 13 — HEDGES only recognized negative-phrased boundary statements
+**Asked:** same question as entries 11/12, user re-ran it independently after those fixes
+shipped and reported it still failed.
+**Answered:** `ABSTAINED` with the generic fallback again. Trace showed real progress this
+run — route correct, exposure register found, one sentence passed via entry 11's precedent
+mechanism — but a second sentence, *"The corpus only covers data shared via the Account
+Aggregator framework,"* failed as `unsupported`, taking the whole answer down with it.
+**Wrong because:** that sentence isn't a claim needing a citation or precedent at all — it's a
+meta-statement about the corpus's own scope, exactly the category `HEDGES` exists to exempt.
+But `HEDGES` only matched the negative phrasing (`"the corpus does not..."`), not this
+positive one (`"the corpus only covers..."`) — a phrasing difference, not a different kind of
+statement. This is model non-determinism surfacing a real, narrower gap: the same question
+generates a different sentence split run to run, and this run happened to hit a hedge shape
+the regex didn't cover. Entries 11/12 were both real, verified fixes — this is a third,
+distinct gap in the same feature, not a regression of either.
+**Class:** `generation`
+**Fixed?** yes. Extended `HEDGES` to also match `"the (documents/specification/corpus) only
+(covers/addresses/applies to/governs/includes)..."`. First attempt had its own bug, caught
+before shipping: `addresses?` only makes the final "s" optional, so it matched "addresses"
+but not the bare verb form "address" — fixed to `address(es)?`. Verified against 5 phrasing
+variants (covers/address/applies to/governs/includes) — all now correctly exempted. Live
+re-run of the user's exact question confirmed end to end: `audit_passed: true`, real answer
+delivered with the common-sense disclaimer, not the generic fallback.
+
+**Correction, further live testing.** That "confirmed end to end" was one successful run, not
+a settled result — the user re-ran the same question independently and hit `ABSTAINED` again,
+for a fourth distinct reason (entry 14). Leaving this claim as originally written rather than
+editing it after the fact: it was true of that run, and the gap it closed was real, but it
+wasn't the last gap. See entry 15 for what that pattern turned out to mean.
+
+---
+
+### 14 — a factual clause and a hedge clause joined by "but" were graded as one unit
+**Asked:** same question again, next live run.
+**Answered:** `ABSTAINED`, generic fallback. The failing sentence: *"The statement does not
+carry login credentials, so it cannot by itself enable a withdrawal or debit—but the corpus
+does not address what other fraud risks may apply to documents shared outside the AA
+framework."*
+**Wrong because:** this is genuinely two different kinds of statement stapled together by
+ordinary English — a precedent-backed factual claim, then (after "but") a scope/boundary
+hedge. `HEDGES.match()` only checks a clause's *start* (`^`), so it never even looked at the
+hedge half once "but" buried it mid-sentence — and evaluating the whole compound sentence as
+one unit for precedent-coverage meant the hedge clause's unrelated vocabulary (fraud risks,
+documents shared outside the framework) diluted the ratio below threshold, rejecting a
+sentence where each half was actually fine on its own.
+**Class:** `generation`
+**Fixed?** yes. Split candidate clauses on `but`/`however`/`yet` (`CLAUSE_SPLIT`) in addition
+to sentence-ending punctuation, so each half is graded independently. Verified against 7
+cases together: this sentence and entry 11's original compound sentence (both MUST PASS), the
+existing gap-paraphrase and three unrelated/fabricated adversarial cases (MUST FAIL,
+unchanged), and a new adversarial case built specifically to probe this exact change — a
+fabricated claim riding along with a legitimate hedge clause via "but" — still correctly
+rejected, since clause-splitting evaluates each half on its own merits rather than letting a
+real hedge vouch for an unrelated fabrication next to it.
+
+---
+
+### 15 — decided to stop patching HEDGES phrasing gaps and document the limitation
+**Asked:** same question, next live run, after entry 14 shipped.
+**Answered:** `ABSTAINED` again — a *third* distinct hedge-phrasing gap: *"...so the RBI
+Master Direction and Sahamati specifications do not define what restrictions apply..."* The
+model named the actual document titles instead of the generic words (`"documents"`,
+`"corpus"`, `"specification"`) `HEDGES` is written to recognize.
+**Wrong because:** this isn't one bug, it's the same root problem surfacing a third time in a
+row on the same question (entries 13, 14, 15). `HEDGES` tries to recognize "this is a
+scope/boundary statement" by enumerating phrasings via regex — but a model can express that
+one idea in effectively unlimited ways: generic or specific document names, positive or
+negative framing, sentence-initial or buried mid-clause. Each individual fix (11, 12, 13, 14)
+was real and independently verified — this isn't a case of a sloppy patch — but the
+underlying approach (classify free text after the model writes it) structurally cannot keep
+pace with natural-language variety. Continuing to patch phrasing-by-phrasing narrows the gap
+without ever closing it.
+**Class:** `generation` — and, honestly, an architecture-level finding as much as a bug: the
+real fix isn't another regex, it's changing what the model is asked to produce. `answer()`/
+`abstain()` currently take one free-text paragraph that this code parses and classifies after
+the fact; a more robust design would have the model submit typed claims directly —
+`{text, support: "citation" | "precedent" | "scope_note"}` — so it explicitly declares what
+kind of statement each sentence is, rather than this code inferring it from phrasing.
+**Fixed?** no — deliberately. Presented this choice directly rather than shipping a fourth
+regex patch: redesign the tool schema now, patch once more, or stop and document. Decided:
+stop and document as a known, understood limitation — not a mystery, not a sloppy fix,
+correctly triaged as "the framework this system operates on has a real edge" rather than "my
+system failed." Belongs in the product note's "what I deliberately did not build to full
+rigor" section (brief §7): free-text-then-parse output validation does not scale against
+paraphrase variety; a typed-claims tool schema would close this properly. Net progress this
+session, honestly counted: 3 real bugs found and fixed (entries 11, 12, 14), 2 phrasing gaps
+in the same mechanism found, fixed, and superseded by further gaps (13's fix real but
+incomplete), 1 gap deliberately left open with the correct fix identified but not built.
+
 <!-- Template — copy per entry.
 
 ### N — one-line summary

@@ -1,0 +1,62 @@
+{
+  "question": "I uploaded my ICICI bank statement for home loan processing with another bank. Will my bank account be subject to fraud.",
+  "outcome": "ABSTAINED",
+  "text": "I can't answer that from these documents. (ROUTE_NOT_GOVERNED)",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "identify_route",
+      "input": {
+        "description": "uploaded my ICICI bank statement for home loan processing with another bank"
+      },
+      "output": {
+        "route": "PDF_UPLOAD",
+        "governed": false,
+        "note": "Statement uploaded directly to a service. No consent artefact governs what happens to it afterwards."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "check_exposure_register",
+      "input": {
+        "artefact": "bank statement PDF"
+      },
+      "output": {
+        "found": true,
+        "artefact": "bank statement PDF",
+        "carries_credentials": false,
+        "does_not_enable": "A debit by itself. Moving money out requires authentication the statement does not contain.",
+        "does_enable": "Salary, balance, EMI and spending profiling, and the account number \u2014 enough to make a targeted approach credible.",
+        "evidence": "Author's assessment from domain knowledge.",
+        "verified": false,
+        "reminder": "State capability only. Never assert the user is safe."
+      }
+    },
+    {
+      "step": "abstain",
+      "reason": "ROUTE_NOT_GOVERNED",
+      "audit_passed": false,
+      "unsupported": [
+        "The corpus covers consent-based flows, not direct PDF uploads."
+      ],
+      "precedent_backed": [
+        "You uploaded a PDF statement directly; no consent artefact governed that upload, so the Account Aggregator framework doesn't determine what the lender may do with it."
+      ],
+      "assurance_passed": true,
+      "assurance_phrases": []
+    }
+  ]
+}

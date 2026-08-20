@@ -93,8 +93,15 @@ def classify(question: str) -> Classification:
 # --- post-generation audit -------------------------------------------------
 
 HEDGES = re.compile(
-    r"^\s*(i can't|i cannot|i don't|the (documents?|specification|corpus) (do(es)? not|don't)|"
+    r"^\s*(i can't|i cannot|i don't|"
+    r"the (documents?|specification|corpus) (do(es)? not|don't|"
+    r"only (covers?|address(es)?|applies to|governs?|includes?))|"
     r"this isn't|that's your call|whether)", re.I)
+
+# Splits a compound sentence at "but/however/yet" as well as sentence-ending punctuation,
+# so a factual clause and a hedge clause joined by ordinary English get evaluated
+# separately rather than as one ambiguous unit (see audit_claims()).
+CLAUSE_SPLIT = re.compile(r"(?<=[.!?])\s+|[\s,;—-]*\b(?:but|however|yet)\b[\s,]*", re.I)
 
 
 # Non-negotiable 9: the product may state capability, never safety. This catches the
@@ -165,7 +172,15 @@ def audit_claims(text: str, citations: list[str], precedents: list[str],
     the same battery, so 0.4 isn't a threshold sitting right at the edge of
     the adversarial cases it needs to reject.
     """
-    sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", text) if s.strip()]
+    # Split on "but/however/yet" as well as sentence punctuation — found live: a compound
+    # sentence joining a precedent-backed claim with an embedded hedge clause via "but"
+    # ("...cannot enable a debit—but the corpus does not address other fraud risks...")
+    # was being evaluated as ONE unit. HEDGES only checks a clause's start, so the hedge
+    # half never got recognized when buried mid-sentence, and its unrelated vocabulary
+    # diluted the whole compound sentence's precedent-coverage ratio below threshold —
+    # rejecting a sentence that was actually two correctly-classifiable halves stapled
+    # together by ordinary English, not one ambiguous claim.
+    sentences = [s.strip() for s in CLAUSE_SPLIT.split(text) if s and s.strip()]
     factual = [s for s in sentences if not HEDGES.match(s) and len(s.split()) > 4]
     precedent_words = [_words(p) for p in precedents if p]
     # Union, not per-precedent max: a sentence combining a route note and an exposure

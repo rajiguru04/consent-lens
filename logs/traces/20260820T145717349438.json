@@ -1,0 +1,113 @@
+{
+  "question": "I uploaded my ICICI bank statement for home loan processing with another bank. Will my bank account be subject to fraud.",
+  "outcome": "ABSTAINED",
+  "text": "I can't answer that from these documents. (ROUTE_NOT_GOVERNED)",
+  "citations": [],
+  "trace": [
+    {
+      "step": "escalate.check",
+      "triggered": false,
+      "kind": null,
+      "matched": null
+    },
+    {
+      "step": "guard.classify",
+      "intent": "ANSWERABLE",
+      "matched": null,
+      "refused": false
+    },
+    {
+      "step": "tool",
+      "tool": "identify_route",
+      "input": {
+        "description": "uploaded my ICICI bank statement for home loan processing with another bank"
+      },
+      "output": {
+        "route": "PDF_UPLOAD",
+        "governed": false,
+        "note": "Statement uploaded directly to a service. No consent artefact governs what happens to it afterwards."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "check_exposure_register",
+      "input": {
+        "artefact": "bank statement PDF"
+      },
+      "output": {
+        "found": true,
+        "artefact": "bank statement PDF",
+        "carries_credentials": false,
+        "does_not_enable": "A debit by itself. Moving money out requires authentication the statement does not contain.",
+        "does_enable": "Salary, balance, EMI and spending profiling, and the account number \u2014 enough to make a targeted approach credible.",
+        "evidence": "Author's assessment from domain knowledge.",
+        "verified": false,
+        "reminder": "State capability only. Never assert the user is safe."
+      }
+    },
+    {
+      "step": "tool",
+      "tool": "retrieve_clauses",
+      "input": {
+        "query": "PDF upload bank statement consent restrictions protections what FIU can do"
+      },
+      "output": {
+        "clauses": [
+          {
+            "clause_id": "cl. 7",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7. Sharing of financial information by Financial Information providers upon valid consent artefact being presented",
+            "score": 0.56,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "Design Principles for Informed Consent > Underlying Principles: > Transparent, without cognitive overload:",
+            "document": "Sahamati \u2014 Design Principles for Informed Consent",
+            "authority": "sro-guidance",
+            "text": "- What data sources am I sharing?\n  - Both FIP and the account within the FIP for which consent is being requested should be clearly called out.\n  - FI Type should be called out clearly indicating in the form of: bank account data, Mutual Fund Data, Insurance Information, etc.\n- What information am I sharing for each data source?\n  - Both account-specific information (balance, transactions, etc.) and user-specific information (PAN, DoB) must be called out either at the consent stage or at the linking stage (if the intention to link is considered as implied consent).\n  - Any applied data filters should be called out.\n- Who am I sharing my information with?\n  - List of entities that will have access to this data must be called out on the screen where user consent is being collected.\n- How long am I sharing my information for?\n  - Duration for which said entity or entities can access the user\u2019s data (consent life).\n  - Duration for which said entity or entities will be able to store the user\u2019s data (data life).\n- Why am I sharing this data?\n  - Clear callout of the purpose behind granting access to this information. Needs to be meaningful to the user. For example - \u201cPersonal finance m",
+            "score": 0.54,
+            "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > Underlying Principles: > Transparent, without cognitive overload: (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.5",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.5 To enable these data flows, the Financial Information providers shall:\n\n implement interfaces that will allow an Account Aggregator to submit consent artefacts, and authenticate each other, and would enable secure flow of financial information to the Account Aggregator;\n\n \n\n adopt means to verify the consent including digital signatures, if any, contained in the consent artefact;\n\n \n\n implement means to digitally sign the financial information that is shared by them about the customers;\n\n \n\n maintain a log of all information sharing requests and the actions performed by them pursuant to such requests, and submit the same to the Account Aggregator.",
+            "score": 0.532,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.5 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "cl. 7.2",
+            "document": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016",
+            "authority": "regulation",
+            "text": "7.2 Upon being presented the consent artefact, the Financial Information provider shall verify:\n\n (a) validity of consent\n\n (b) specified dates and usage; and\n\n (c) the credentials of the Account Aggregator\n\n through appropriate means.",
+            "score": 0.529,
+            "citation": "RBI Master Direction \u2014 NBFC Account Aggregator (Reserve Bank) Directions, 2016, cl. 7.2 (retrieved 2026-08-20)"
+          },
+          {
+            "clause_id": "Design Principles for Informed Consent > FIP Selection Screen:",
+            "document": "Sahamati \u2014 Design Principles for Informed Consent",
+            "authority": "sro-guidance",
+            "text": "- FI Category\n- Info Requested + Data filters\n- FI Date Range\n- Account and FIP details",
+            "score": 0.524,
+            "citation": "Sahamati \u2014 Design Principles for Informed Consent, Design Principles for Informed Consent > FIP Selection Screen: (retrieved 2026-08-20)"
+          }
+        ]
+      }
+    },
+    {
+      "step": "abstain",
+      "reason": "ROUTE_NOT_GOVERNED",
+      "audit_passed": false,
+      "unsupported": [
+        "That route is not governed by the Account Aggregator consent framework, so the RBI Master Direction and Sahamati specifications do not define what restrictions apply to how the lender uses or stores that file."
+      ],
+      "precedent_backed": [
+        "You uploaded a PDF statement directly to the lender."
+      ],
+      "assurance_passed": true,
+      "assurance_phrases": []
+    }
+  ]
+}
